@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infocenter_data version="1.0">
+  <iar_name>Getting Started</iar_name>                                                                <!--App-->
+  <iar_description>Shows basic use of the I/O,the timer and the interrupt controller</iar_description><!--App short description-->
+  <iar_curdir>$CUR_DIR$</iar_curdir>
+</infocenter_data>
