@@ -1,5 +1,8 @@
-
- /*
+#ifndef _ardGPIO_h
+#define _ardGPIO_h
+#include <stm32f0xx_gpio.h>
+#include <stdarg.h>
+/*
   @param
 port: 0-3,5 :: A,B,C,D,F
 pin: 0-15
@@ -22,48 +25,10 @@ speed:
 
 void pinMode(uint8_t port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed,uint8_t outputType)
 */
-void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...){
-  uint8_t PUPD, speed, outputType;
-    va_list ap;
-    va_start(ap, mode);
-    int temp=va_arg(ap, int);
-    if(temp!=-1){ PUPD=temp;}
-    else{PUPD=GPIO_PuPd_NOPULL;}
-    temp=va_arg(ap, int);
-    if(temp!=-1){speed=temp;}
-    else{speed=GPIO_Speed_Level_3;}
-    temp=va_arg(ap, int);
-    if(temp!=-1){outputType=temp;}
-    else{outputType=GPIO_OType_PP;}
-    va_end(ap);
-  
-  GPIO_InitTypeDef  GPIO_InitStructure;
-  int clockShift = (int)(((long int)port&0x00001C00)>>10);
-  RCC_AHBPeriphClockCmd(((uint32_t)0x00020000)<<clockShift, ENABLE);
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...);
+void digitalWrite(GPIO_TypeDef* port, uint8_t pin,uint8_t state);
+uint8_t digitalRead(GPIO_TypeDef* port, uint8_t pin);
+uint8_t digitalReadOut(GPIO_TypeDef* port, uint8_t pin);
+uint16_t digitalReadDataOut(GPIO_TypeDef* port);
 
-  //Configure the GPIO pin 
-  GPIO_InitStructure.GPIO_Pin = ((uint16_t)0x0001)<<pin;
-  GPIO_InitStructure.GPIO_Mode =(GPIOMode_TypeDef) mode;
-  GPIO_InitStructure.GPIO_PuPd = (GPIOPuPd_TypeDef)PUPD;
-  GPIO_InitStructure.GPIO_Speed = (GPIOSpeed_TypeDef)speed;
-  GPIO_InitStructure.GPIO_OType = (GPIOOType_TypeDef)outputType;
-  GPIO_Init(port, &GPIO_InitStructure);
-  port->BSRR = ((uint16_t)0x0001)<<pin;
- 
-
-}
-
-
-
-void digitalWrite(GPIO_TypeDef* port, uint8_t pin,uint8_t state){
-  if(state!=0){
-port->ODR |= (1<<pin);  
-  }
-  else {
-port->ODR &= ~(1<<pin);    
-  }
-
-
-}
-
-
+#endif

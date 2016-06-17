@@ -26,7 +26,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "main.h"
+#include <main.h>
+
 
 /** @addtogroup Template_Project
   * @{
@@ -108,6 +109,27 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
+void USART1_IRQHandler(void){
+
+  uint16_t d = 0;
+    //disable other interrupts for the time being or mayb stm32 does it itself
+    d=(uint16_t)(Serial.USART.RDR & (uint16_t)0x01FF);;
+    // if buffer full, set the overflow flag and return
+    uint8_t next = (Serial.recvBuf_tail + 1) % RECV_BUF_LEN;
+    if (next != Serial.recvBuf_head)
+    {
+      // save new data in buffer: tail points to where byte goes
+      Serial.recvBuf[Serial.recvBuf_tail] = (uint8_t)d; // save new byte
+      Serial.recvBuf_tail= next;
+    } 
+    else 
+    {
+      //buffer overflow happened;
+      //_buffer_overflow = true;
+    }
+
+}
+
 
 /**
   * @}

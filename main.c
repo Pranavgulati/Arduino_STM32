@@ -1,37 +1,22 @@
-/*************************************************************************
- *
- *    Used with ICCARM and AARM.
- *
- *    (c) Copyright IAR Systems 2012
- *
- *    File name   : main.c
- *    Description : Define main module
- *
- *    History :
- *    1. Date        : 28, February 2012
- *       Author      : Stanimir Bonev
- *       Description : Create
- *
- *  This example project shows how to use the IAR Embedded Workbench for ARM
- * to develop code for the IAR-STM32F051R8-SK evaluation board. It shows
- * basic use of I/O, timer and the interrupt controllers.
- *  Displays running lights on the board LED's.
- *
- *    $Revision: 103 $
- **************************************************************************/
 
-/* Includes ------------------------------------------------------------------*/
-#include "arm_comm.h"
-#include "main.h"
-#include <stdarg.h>
+#include <arm_comm.h>
+#include <main.h>
+
+
+
+
 static __IO uint32_t TimingDelay;
 
-void DelayResolution100us(Int32U Delay)
+void delayResolution100us(Int32U delay)
 {
   for(volatile int i = 500; i;i--);
 }
-#include <Arduino.h>
 
+void delay(__IO uint32_t nTime)
+{
+  TimingDelay = nTime;
+  while(TimingDelay != 0);
+}
 
 int main(void)
 {
@@ -45,39 +30,26 @@ RCC_ClocksTypeDef RCC_Clocks;
      */
   /* SysTick end of count event each 10ms */
   RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
+  SysTick_Config(RCC_Clocks.HCLK_Frequency / 10);
 
   /* Initialize LEDs, Key Button, LCD and COM port(USART) available on
      STM320518-EVAL board *****************************************************/
-  pinMode(GPIOC,6,ARD_OUTPUT);
-  pinMode(GPIOC,7,ARD_OUTPUT);
+  
   pinMode(GPIOC,8,ARD_OUTPUT);
   pinMode(GPIOC,9,ARD_OUTPUT);
-  LEDInit(LED1);
-  LEDInit(LED2);
-  LEDInit(LED3);
-  LEDInit(LED4);
-
+  pinMode(GPIOA,4,ARD_INPUT);
+  pinMode(GPIOA,5,ARD_INPUT);
   while(1)
   {
-    digitalWrite(GPIOC,6,ARD_HIGH);
-    /* Toggle LD1 */
-    LEDToggle(LED1);
-    /* Insert 50 ms delay */
-    Delay(10);
-    digitalWrite(GPIOC,6,ARD_LOW);
-    /* Toggle LD1 */
-    LEDToggle(LED1);
-    Delay(10);
+    if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
+    else{digitalWrite(GPIOC,8,ARD_LOW);}
+    if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
+    else{digitalWrite(GPIOC,9,ARD_LOW);}
   }
+
 }
 
-void Delay(__IO uint32_t nTime)
-{
-  TimingDelay = nTime;
 
-  while(TimingDelay != 0);
-}
 
 /**
   * @brief  Decrements the TimingDelay variable.
@@ -92,30 +64,5 @@ void TimingDelay_Decrement(void)
   }
 }
 
-#ifdef  USE_FULL_ASSERT
-
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t* file, uint32_t line)
-{
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-
-  /* Infinite loop */
-  while (1)
-  {
-  }
-}
-#endif
-
-/**
-  * @}
-  */
 
 
-/******************* (C) COPYRIGHT 2012 STMicroelectronics *****END OF FILE****/

@@ -197,10 +197,10 @@
   <group>
     <name>User</name>
     <file>
-      <name>$PROJ_DIR$\ardGPIO.h</name>
+      <name>$PROJ_DIR$\ardGPIO.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\Arduino.h</name>
+      <name>$PROJ_DIR$\ardUSART.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\main.c</name>
