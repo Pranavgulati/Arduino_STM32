@@ -110,7 +110,8 @@ void SysTick_Handler(void)
 {
 }*/
 void USART1_IRQHandler(void){
-
+//to ensure only receive interrupt is handled
+  if(USART_GetFlagStatus(&(Serial.USART),USART_FLAG_RXNE)==SET){
   uint16_t d = 0;
     //disable other interrupts for the time being or mayb stm32 does it itself
     d=(uint16_t)(Serial.USART.RDR & (uint16_t)0x01FF);;
@@ -124,10 +125,11 @@ void USART1_IRQHandler(void){
     } 
     else 
     {
-      //buffer overflow happened;
+      //buffer overflow happened but circular buffer so we can let it pass
       //_buffer_overflow = true;
     }
-
+  //RXNE flag is cleared when the buffer is read so no clear reqd.
+  }
 }
 
 

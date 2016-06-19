@@ -24,14 +24,14 @@ void Serial_begin(uint8_t COMPORT,uint32_t baudRate){
   uint8_t RXpin=10,TXpin=9;
   uint32_t usartClock=RS232_COM1_CLK;
   switch(COMPORT){
-    case 1:
+    case COM1:
       USART =USART1;
       gpioPort=GPIOA;
       RXpin=10;
       TXpin=9;
       usartClock=RS232_COM1_CLK;
       break;
-    case 2:
+    case COM2:
       USART =USART2;
       gpioPort=GPIOA;
       RXpin=3;
@@ -60,26 +60,25 @@ void Serial_begin(uint8_t COMPORT,uint32_t baudRate){
   USART_ITConfig(&Serial.USART,USART_IT_RXNE,  ENABLE);
   USART_Cmd(&Serial.USART,ENABLE);
   //interrupts are registered only for USART1 and is considered the default port
+  //PRO users may change this as they want
   NVIC_SetPriority(USART1_IRQn,1);
 }
  
-void Serial_write(uint16_t Data){
-  USART_SendData(USART1,Data);
+void Serial_write(uint8_t Data){
+  
+  USART_SendData(&Serial.USART,Data);
 }
 
-uint16_t Serial_read(USART_TypeDef* USARTx)
-{
-    // Empty buffer?
-  if (Serial.recvBuf_head == Serial.recvBuf_tail)
-    return -1;
-
+uint16_t Serial_read(){
+  
+  // Empty buffer?
+if (Serial.recvBuf_head == Serial.recvBuf_tail){ return -1;}
   // Read from "head"
   uint8_t d = Serial.recvBuf[Serial.recvBuf_head]; // grab next byte
   Serial.recvBuf_head = (Serial.recvBuf_head + 1) % RECV_BUF_LEN;
   return d;
 }
-uint8_t Serial_available()
-{
+uint8_t Serial_available(){
   return (Serial.recvBuf_tail + RECV_BUF_LEN - Serial.recvBuf_head) % RECV_BUF_LEN;
 }
 

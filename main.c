@@ -2,9 +2,6 @@
 #include <arm_comm.h>
 #include <main.h>
 
-
-
-
 static __IO uint32_t TimingDelay;
 
 void delayResolution100us(Int32U delay)
@@ -39,12 +36,26 @@ RCC_ClocksTypeDef RCC_Clocks;
   pinMode(GPIOC,9,ARD_OUTPUT);
   pinMode(GPIOA,4,ARD_INPUT);
   pinMode(GPIOA,5,ARD_INPUT);
+  Serial_begin(COM1,115200);
+  
   while(1)
-  {
+  {uint16_t  input=0;
     if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
     else{digitalWrite(GPIOC,8,ARD_LOW);}
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
     else{digitalWrite(GPIOC,9,ARD_LOW);}
+    
+    Serial_write(255);
+    if(Serial_available()){
+    //be sure to Serial_begin with the port that you intend to listen on
+   input = Serial_read();
+    }
+    if(input==256){
+    digitalWrite(GPIOC,8,ARD_HIGH);
+    delay(100);
+    digitalWrite(GPIOC,8,ARD_LOW);
+    delay(100);
+    }
   }
 
 }

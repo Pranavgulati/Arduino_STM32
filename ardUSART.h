@@ -18,8 +18,8 @@ static serial Serial;
 void Serial_stop();
 void Serial_stopAll();
 void Serial_begin(uint8_t COMPORT,uint32_t baudRate);
-void Serial_write(uint16_t Data);
-uint16_t Serial_read(USART_TypeDef* USARTx);
+void Serial_write(uint8_t Data);
+uint16_t Serial_read();
 uint8_t Serial_available();
 
 
