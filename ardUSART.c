@@ -1,6 +1,5 @@
+#include <Arduino.h>
 #include <ardUSART.h>
-#include <ardGPIO.h>
-
 
 void Serial_stop(){
 USART_DeInit(&Serial.USART);
@@ -12,48 +11,58 @@ USART_DeInit(USART2);
 USART_DeInit(USART3);
 USART_DeInit(USART4);
 }
-void Serial_begin(uint32_t baudRate){
-//  void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct)
-pinMode(GPIOA,9,GPIO_MODE_AF);
-  GPIO_InitTypeDef GPIO_InitStructure;
-  uint8_t COM=0;//default com port pin A9,A10
-  /* Enable GPIO clock */
-  RCC_AHBPeriphClockCmd(COM_TX_PORT_CLK[COM] | COM_RX_PORT_CLK[COM], ENABLE);
-  /* Enable USART clock */
-  RCC_APB2PeriphClockCmd(COM_USART_CLK[COM], ENABLE); 
-  /* Connect PXx to USARTx_Tx */
-  GPIO_PinAFConfig(COM_TX_PORT[COM], COM_TX_PIN_SOURCE[COM], COM_TX_AF[COM]);
-  /* Connect PXx to USARTx_Rx */
-  GPIO_PinAFConfig(COM_RX_PORT[COM], COM_RX_PIN_SOURCE[COM], COM_RX_AF[COM]);
-  
-  /* Configure USART Tx as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = COM_TX_PIN[COM];
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_Init(COM_TX_PORT[COM], &GPIO_InitStructure);
-    
-  /* Configure USART Rx as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Pin = COM_RX_PIN[COM];
-  GPIO_Init(COM_RX_PORT[COM], &GPIO_InitStructure);
+/*
+@brief write something here
+@param COM1=RX:TX::A10:A9 , COM2=RX:TX::A3:A2 
+@param baudRate 9600.,19200,115200 etc.
 
+@retval None
+*/
+void Serial_begin(uint8_t COMPORT,uint32_t baudRate){
+  USART_TypeDef* USART =USART1;
+  GPIO_TypeDef* gpioPort=GPIOA;
+  uint8_t RXpin=10,TXpin=9;
+  uint32_t usartClock=RS232_COM1_CLK;
+  switch(COMPORT){
+    case 1:
+      USART =USART1;
+      gpioPort=GPIOA;
+      RXpin=10;
+      TXpin=9;
+      usartClock=RS232_COM1_CLK;
+      break;
+    case 2:
+      USART =USART2;
+      gpioPort=GPIOA;
+      RXpin=3;
+      TXpin=2;
+      usartClock=UXT_COM2_CLK;
+      break;
+    default:
+      //case 1 hence already initialized is used
+      break;
+    }  
+  pinMode(gpioPort,TXpin,GPIO_Mode_AF,GPIO_PuPd_UP,GPIO_Speed_10MHz,GPIO_OType_PP);
+  pinMode(gpioPort,RXpin,GPIO_Mode_AF,GPIO_PuPd_UP,GPIO_Speed_10MHz,GPIO_OType_PP);
+  
+  //enable usart clock
+  RCC_APB2PeriphClockCmd(usartClock, ENABLE); 
+  //alternate function config for the pins
+  pinAFconfig(gpioPort,TXpin, GPIO_AF_1);
+  pinAFconfig(gpioPort,RXpin, GPIO_AF_1);
   /* USART configuration */
-  USART_Init(Serial.USART, USART_InitStruct);
-  /* Enable USART */
-  USART_Cmd(Serial.USART, ENABLE); 
+  //setting the USART props in our struct so that they can be read also
   
-Serial.USART=*USART1;
-USART_StructInit(&(Serial.USART_props));
-
-Serial.USART_props.USART_BaudRate=baudRate;
-USART_Init(&Serial.USART,&Serial.USART_props);
-USART_ITConfig(USART1,USART_IT_RXNE,  ENABLE);
-USART_Cmd(Serial.USART,ENABLE);
-NVIC_SetPriority(USART1_IRQn,1);
+  Serial.USART=*(USART);
+  USART_StructInit(&(Serial.USART_props));
+  Serial.USART_props.USART_BaudRate=baudRate;
+  USART_Init(&Serial.USART,&Serial.USART_props);
+  USART_ITConfig(&Serial.USART,USART_IT_RXNE,  ENABLE);
+  USART_Cmd(&Serial.USART,ENABLE);
+  //interrupts are registered only for USART1 and is considered the default port
+  NVIC_SetPriority(USART1_IRQn,1);
 }
  
-
 void Serial_write(uint16_t Data){
   USART_SendData(USART1,Data);
 }

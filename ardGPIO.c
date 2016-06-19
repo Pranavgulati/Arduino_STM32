@@ -88,3 +88,30 @@ return (((uint16_t)port->ODR)&(1<<pin))!=0?1:0;
 uint16_t digitalReadDataOut(GPIO_TypeDef* port){
 return ((uint16_t)port->ODR);
 }
+
+/** #wrapper function only #copied from existing lib.
+  * @brief  Writes data to the specified GPIO data port.
+  * @param  GPIO port like GPIOA,GPIOC,D,F
+  * @param  GPIO_PinSource: specifies the pin for the Alternate function,0-15
+  * @param  GPIO_AF: selects the pin to used as Alternate function.
+  *          This parameter can be one of the following value:
+  *            @arg GPIO_AF_0:  WKUP, EVENTOUT, TIM15, SPI1, TIM17, MCO, SWDAT, SWCLK,
+  *                             TIM14, BOOT, USART1, CEC, IR_OUT, SPI2, TIM3, USART4,
+  *                             CAN, USART2, CRS, TIM16, TIM1, TS 
+  *            @arg GPIO_AF_1: USART2, CEC, TIM3, USART1, USART2, EVENTOUT, I2C1,
+  *                            I2C2, TIM15, SPI2, USART3, TS, SPI1 
+  *            @arg GPIO_AF_2: TIM2, TIM1, EVENTOUT, TIM16, TIM17, USB
+  *            @arg GPIO_AF_3: TS, I2C1, TIM15, EVENTOUT 
+  *            @arg GPIO_AF_4: TIM14, USART4, USART3, CRS, CAN
+  *            @arg GPIO_AF_5: TIM16, TIM17, TIM15, SPI2, I2C2
+  *            @arg GPIO_AF_6: EVENTOUT
+  *            @arg GPIO_AF_7: COMP1 OUT, COMP2 OUT 
+    @note   please use pinMode first to set pin as alternate function first
+  * @note   Refer to the Alternate function mapping table in the device datasheet 
+  *         for the detailed mapping of the system and peripherals'alternate 
+  *         function I/O pins.
+  * @retval None
+  */
+void pinAFconfig(GPIO_TypeDef* port,uint16_t pinSource,uint8_t altFunction){
+GPIO_PinAFConfig(port,pinSource,altFunction);
+}

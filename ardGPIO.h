@@ -22,7 +22,7 @@ speed:
   GPIO_Speed_Level_3  = 0x03  I/O output speed: High 50 MHz 
 }GPIOSpeed_TypeDef;
 
-
+extended call format
 void pinMode(uint8_t port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed,uint8_t outputType)
 */
 void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...);
@@ -30,5 +30,5 @@ void digitalWrite(GPIO_TypeDef* port, uint8_t pin,uint8_t state);
 uint8_t digitalRead(GPIO_TypeDef* port, uint8_t pin);
 uint8_t digitalReadOut(GPIO_TypeDef* port, uint8_t pin);
 uint16_t digitalReadDataOut(GPIO_TypeDef* port);
-
+void pinAFconfig(GPIO_TypeDef* port,uint16_t pinSource,uint8_t altFunction);
 #endif
