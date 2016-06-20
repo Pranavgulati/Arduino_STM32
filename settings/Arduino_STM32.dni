@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1162708972
+Checksum=256590681
 [JLinkDriver]
 CStepIntDis=_ 0
 [stlink]
@@ -41,6 +41,11 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[InterruptStripe]
+Sort=1
+[Trace2]
+Enabled=0
+ShowSource=0
 [SWOTraceWindow]
 PcSampling=0
 InterruptLogs=0
@@ -51,21 +56,32 @@ EventFOLD=0
 EventLSU=0
 EventSLEEP=0
 [DataLog]
-LogEnabled=0
+LogEnabled=1
 SumEnabled=0
 GraphEnabled=0
 ShowTimeLog=1
 ShowTimeSum=1
 [InterruptLog]
-LogEnabled=0
+LogEnabled=1
 SumEnabled=0
 GraphEnabled=0
-ShowTimeLog=1
+ShowTimeLog=0
 ShowTimeSum=1
 SumSortOrder=0
+[Disassemble mode]
+mode=3
+[Breakpoints2]
+Count=0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+Count=0
+SuppressDialog=0
 [CallStackLog]
 Enabled=0
 [DriverProfiling]
@@ -74,14 +90,3 @@ Mode=3
 Graph=0
 Symbiont=0
 Exclusions=
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Count=0
-[Aliases]
-Count=0
-SuppressDialog=0
