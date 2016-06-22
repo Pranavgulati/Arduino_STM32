@@ -31,7 +31,6 @@
 #include "stm320Fxx_ksk.h"
 #include "drv_hd44780.h"
 #include "accl_drv.h"
-#include <stdarg.h>
 #include <stdio.h>
 #include <Arduino.h>
 

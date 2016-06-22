@@ -17,7 +17,7 @@ USART_DeInit(USART4);
 /*
 @brief write something here
 @param COM1=RX:TX::A10:A9 , COM2=RX:TX::A3:A2 
-@param baudRate 9600.,19200,115200 etc.
+@param baudRate 9600,19200,115200 etc.
 
 @retval None
 */

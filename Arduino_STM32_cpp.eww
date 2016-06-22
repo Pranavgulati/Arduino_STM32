@@ -2,7 +2,7 @@
 
 <workspace>
   <project>
-    <path>$WS_DIR$\Arduino_STM32.ewp</path>
+    <path>$WS_DIR$\Arduino_STM32_cpp.ewp</path>
   </project>
   <batchBuild/>
 </workspace>

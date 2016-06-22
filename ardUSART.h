@@ -2,6 +2,13 @@
 
 #ifndef _ardUSART_h
 #define _ardUSART_h 
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+
+
 #include "stm32f0xx_usart.h"
 #include <stm320Fxx_ksk.h>
 #define RECV_BUF_LEN 256
@@ -33,5 +40,10 @@ uint8_t Serial_available();
 void Serial_println(uint8_t *data);
 void Serial_print(uint8_t *data);
 void Serial_Dprint(unsigned long data,...);
+
+
+#ifdef __cplusplus
+ }
+#endif
 
 #endif

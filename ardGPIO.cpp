@@ -56,7 +56,7 @@ void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...){
 }
 
 
-
+void pinMode();
 void digitalWrite(GPIO_TypeDef* port, uint8_t pin,uint8_t state){
  /* if(state!=0){
 port->ODR |= (1<<pin);  

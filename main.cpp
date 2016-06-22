@@ -60,7 +60,6 @@ RCC_ClocksTypeDef RCC_Clocks;
     }
     delay(1);
   }
-
 }
 
 
