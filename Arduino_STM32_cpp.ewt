@@ -257,6 +257,9 @@
   <group>
     <name>User</name>
     <file>
+      <name>$PROJ_DIR$\ardADC.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\ardGPIO.cpp</name>
     </file>
     <file>

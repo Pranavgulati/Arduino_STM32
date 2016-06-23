@@ -1,6 +1,10 @@
 
 #include <arm_comm.h>
 #include <main.h>
+#include <Arduino.h>
+#include <ardGPIO.h>
+#include <ardUSART.h>
+#include <ardADC.h>
 
 static __IO uint32_t TimingDelay;
 
@@ -39,7 +43,11 @@ RCC_ClocksTypeDef RCC_Clocks;
   //PA10:PA9::RX:TX
   Serial_begin(COM1,115200);
   while(1)
-  {uint16_t  input=0;
+  {
+    int a =analogRead(GPIOC,8);
+    int temp=0;
+    analogRead(GPIOC,8,&temp);
+    uint16_t  input=0;
     if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
     else{digitalWrite(GPIOC,8,ARD_LOW);}
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}

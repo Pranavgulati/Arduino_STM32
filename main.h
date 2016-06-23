@@ -32,7 +32,7 @@
 #include "drv_hd44780.h"
 #include "accl_drv.h"
 #include <stdio.h>
-#include <Arduino.h>
+
 
 struct s_test
 {
