@@ -1983,6 +1983,9 @@
       <name>$PROJ_DIR$\ardADC.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\ardDAC.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\ardGPIO.cpp</name>
     </file>
     <file>

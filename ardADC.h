@@ -2,7 +2,7 @@
 #define _ardADC_h 
 #include <Arduino.h>
 #include <stm32f0xx_adc.h>
-#include <stm32f0xx_it.h>
+
 /*
 12 bit adc 16 ext channels
 ADC_IN0..ADC_IN7        :: PA0..PA7
