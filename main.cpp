@@ -41,7 +41,7 @@ RCC_ClocksTypeDef RCC_Clocks;
   pinMode(GPIOA,4,ARD_INPUT);
   pinMode(GPIOA,5,ARD_INPUT);
   //PA10:PA9::RX:TX
-  Serial_begin(COM1,115200);
+  Serial.begin(COM1,115200);
   while(1)
   {
     int a =analogRead(GPIOC,8);
@@ -54,11 +54,11 @@ RCC_ClocksTypeDef RCC_Clocks;
     else{digitalWrite(GPIOC,9,ARD_LOW);}
     
     //Serial_println("HELLO");
-    Serial_Dprint(1656,ARD_DEC);
+    Serial.print(1656,ARD_DEC);
     delay(10);
-    if(Serial_available()){
+    if(Serial.available()){
     //be sure to Serial_begin with the port that you intend to listen on
-   input = Serial_read();
+   input = Serial.read();
     }
     if(input=='B'){
     digitalWrite(GPIOC,8,ARD_HIGH);

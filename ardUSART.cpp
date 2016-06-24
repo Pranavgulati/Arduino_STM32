@@ -4,11 +4,11 @@
 
 serial Serial;
 
-void Serial_stop(){
+void serial::stop(){
 USART_DeInit(Serial.USART);
 }
 
-void Serial_stopAll(){
+void serial::stopAll(){
 USART_DeInit(USART1);
 USART_DeInit(USART2);
 USART_DeInit(USART3);
@@ -21,7 +21,7 @@ USART_DeInit(USART4);
 
 @retval None
 */
-void Serial_begin(uint8_t COMPORT,uint32_t baudRate){
+void serial::begin(uint8_t COMPORT,uint32_t baudRate){
   USART_TypeDef* USART =USART1;
   USART_InitTypeDef USART_properties;
   GPIO_TypeDef* gpioPort=GPIOA;
@@ -75,12 +75,12 @@ void Serial_begin(uint8_t COMPORT,uint32_t baudRate){
 
 }
  
-void Serial_write(uint8_t Data){
+void serial::write(uint8_t Data){
   
   USART_SendData(USART1,Data);
 }
 
-uint16_t Serial_read(){
+uint16_t serial::read(){
   
   // Empty buffer?
 if (Serial.recvBuf_head == Serial.recvBuf_tail){ return -1;}
@@ -89,37 +89,36 @@ if (Serial.recvBuf_head == Serial.recvBuf_tail){ return -1;}
   Serial.recvBuf_head = (Serial.recvBuf_head + 1) % RECV_BUF_LEN;
   return d;
 }
-uint8_t Serial_available(){
+
+
+uint8_t serial::available(){
   return (Serial.recvBuf_tail + RECV_BUF_LEN - Serial.recvBuf_head) % RECV_BUF_LEN;
 }
 
-void Serial_Dprint(unsigned long data,...){
-  uint8_t mode;//BIN,HEX,DEC,normal(-1)
-    va_list ap;
-    va_start(ap, data);
-    int temp=va_arg(ap, int);
-    if(temp!=-1){ mode=temp;}
-    else{mode=NORMAL;}
-    va_end(ap);
+
+//BIN,HEX,DEC,normal(-1)
+
+void serial::print(unsigned long data,uint8_t mode){
     unsigned long int mask=0;
     uint8_t characters[10];
     uint8_t flag=0;
     switch(mode){
     case ARD_BIN:
-      Serial_write('0');
-      Serial_write('b');
+      write('0');
+      write('b');
       mask=0x80000000;
-      for(unsigned int i=0;i<sizeof(data);i++){
-        Serial_write(((data&mask)!=0?1:0)+'0');
+      for(unsigned int i=0;i<sizeof(data)*8;i++){
+        if(i%4==0){write(' ');}
+        write((uint8_t)((data&mask)!=0?1:0)+'0');
        mask=mask>>1;
-      }      
+      }
       break;
     case ARD_HEX:
-      Serial_write('0');
-      Serial_write('x');
+      write('0');
+      write('x');
        mask=0xF0000000;
       for(unsigned int i=0;i<8;i++){
-        Serial_write((data&mask>>4*(7-i)));
+        write((data&mask)>>4*(7-i));
        mask=mask>>4;
       }      
       
@@ -131,11 +130,11 @@ void Serial_Dprint(unsigned long data,...){
         }      
      
      for(unsigned int i=0;i<10;i++){
-       if(characters[i]!=0 || flag==1){flag=1;Serial_write(characters[i]+'0');}
+       if(characters[i]!=0 || flag==1){flag=1;write((uint8_t)characters[i]+'0');}
      }
       break;
     default:
-      Serial_write((uint8_t)data);
+      write((uint8_t)data);
       break;
     
     }  
@@ -143,15 +142,39 @@ void Serial_Dprint(unsigned long data,...){
 
 }
 
-void Serial_print(uint8_t *data){
-  int temp =strlen((const char*)data);
+void serial::print(const char* data){
+  int temp =strlen(data);
     for (int i=0;i<strlen((const char*)data);i++){
-    Serial_Dprint(*(data++),ARD_HEX);}
+    write(*(data++));
+    }
 }
 
-void Serial_println(uint8_t *data){
-  Serial_print(data);
-  Serial_write('\n');
+void serial::println(const char* data){
+  print(data);
+  write('\n');
+}
+
+
+void serial::print(unsigned long data){
+      print((uint8_t)data,ARD_DEC);
+}  
+
+void serial::print(int data){
+      print((uint8_t)data,ARD_DEC);
+}  
+
+void serial::println(unsigned long data){
+print(data);
+write('\n');
+}
+void serial::println(int data){
+print(data);
+  write('\n');
+}
+void serial::println(unsigned long data,uint8_t mode){
+
+  print(data);
+  write('\n');
 }
 
 
