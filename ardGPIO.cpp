@@ -24,20 +24,8 @@ speed:
 
 void pinMode(uint8_t port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed,uint8_t outputType)
 */
-void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...){
-  uint8_t PUPD, speed, outputType;
-    va_list ap;
-    va_start(ap, mode);
-    int temp=va_arg(ap, int);
-    if(temp!=-1){ PUPD=temp;}
-    else{PUPD=GPIO_PuPd_NOPULL;}
-    temp=va_arg(ap, int);
-    if(temp!=-1){speed=temp;}
-    else{speed=GPIO_Speed_Level_3;}
-    temp=va_arg(ap, int);
-    if(temp!=-1){outputType=temp;}
-    else{outputType=GPIO_OType_PP;}
-    va_end(ap);
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed,uint8_t outputType){
+
   
   GPIO_InitTypeDef  GPIO_InitStructure;
   int clockShift = (int)(((long int)port&0x00001C00)>>10);
@@ -54,9 +42,21 @@ void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...){
  
 
 }
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed){
+pinMode( port,  pin, mode, PUPD, speed, GPIO_OType_PP);
 
+}
 
-void pinMode();
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD){
+
+ pinMode( port,  pin, mode, PUPD, GPIO_Speed_Level_3, GPIO_OType_PP);
+
+}
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode){
+pinMode( port,  pin, mode, GPIO_PuPd_NOPULL, GPIO_Speed_Level_3, GPIO_OType_PP);
+
+}
+  
 void digitalWrite(GPIO_TypeDef* port, uint8_t pin,uint8_t state){
  /* if(state!=0){
 port->ODR |= (1<<pin);  

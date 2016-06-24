@@ -1,14 +1,11 @@
 #ifndef _ardGPIO_h
 #define _ardGPIO_h
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
-
-
 #include <stm32f0xx_gpio.h>
 #include <stdarg.h>
+
+
+
 /*
   @param
 port: 0-3,5 :: A,B,C,D,F
@@ -32,12 +29,25 @@ speed:
 extended call format
 void pinMode(uint8_t port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed,uint8_t outputType)
 */
-void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,...);
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed,uint8_t outputType);
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t speed);
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD);
+void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode);
+
+
+
 void digitalWrite(GPIO_TypeDef* port, uint8_t pin,uint8_t state);
 uint8_t digitalRead(GPIO_TypeDef* port, uint8_t pin);
 uint8_t digitalReadOut(GPIO_TypeDef* port, uint8_t pin);
 uint16_t digitalReadDataOut(GPIO_TypeDef* port);
 void pinAFconfig(GPIO_TypeDef* port,uint16_t pinSource,uint8_t altFunction);
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+
+
 
 
 #ifdef __cplusplus

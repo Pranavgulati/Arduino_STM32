@@ -30,7 +30,7 @@
         <option>
           <name>Variant</name>
           <version>21</version>
-          <state>35</state>
+          <state>34</state>
         </option>
         <option>
           <name>GEndianMode</name>
@@ -65,7 +65,7 @@
         </option>
         <option>
           <name>OGCoreOrChip</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelect</name>
@@ -99,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>default	None</state>
+          <state>STM32F030x8	ST STM32F030x8</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -138,12 +138,12 @@
         <option>
           <name>GFPUCoreSlave</name>
           <version>21</version>
-          <state>35</state>
+          <state>34</state>
         </option>
         <option>
           <name>GBECoreSlave</name>
           <version>21</version>
-          <state>35</state>
+          <state>34</state>
         </option>
         <option>
           <name>OGUseCmsis</name>
@@ -330,7 +330,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -339,7 +339,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -389,7 +389,7 @@
         </option>
         <option>
           <name>IccStaticDestr</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IccCppInlineSemantics</name>
@@ -716,11 +716,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$PROJ_DIR$\config\stm32f0xx_flash.icf</state>
+          <state>$TOOLKIT_DIR$\config\linker\ST\stm32f030x8.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -875,7 +875,7 @@
         </option>
         <option>
           <name>IlinkOptExceptionsAllow</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IlinkOptExceptionsForce</name>
@@ -891,7 +891,7 @@
         </option>
         <option>
           <name>IlinkOptUseVfe</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IlinkOptForceVfe</name>
@@ -1037,7 +1037,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.30.1.53141</state>
+          <state>7.30.1.7765</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1902,7 +1902,22 @@
   <group>
     <name>EWARM</name>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.s</name>
+      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.S</name>
+    </file>
+  </group>
+  <group>
+    <name>Libraries</name>
+    <file>
+      <name>$PROJ_DIR$\ardADC.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ardDAC.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ardGPIO.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ardUSART.cpp</name>
     </file>
   </group>
   <group>
@@ -1979,18 +1994,6 @@
   </group>
   <group>
     <name>User</name>
-    <file>
-      <name>$PROJ_DIR$\ardADC.cpp</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ardDAC.cpp</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ardGPIO.cpp</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ardUSART.cpp</name>
-    </file>
     <file>
       <name>$PROJ_DIR$\main.cpp</name>
     </file>

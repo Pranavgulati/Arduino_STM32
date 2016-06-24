@@ -179,7 +179,22 @@
   <group>
     <name>EWARM</name>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.s</name>
+      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.S</name>
+    </file>
+  </group>
+  <group>
+    <name>Libraries</name>
+    <file>
+      <name>$PROJ_DIR$\ardADC.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ardDAC.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ardGPIO.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ardUSART.cpp</name>
     </file>
   </group>
   <group>
@@ -256,18 +271,6 @@
   </group>
   <group>
     <name>User</name>
-    <file>
-      <name>$PROJ_DIR$\ardADC.cpp</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ardDAC.cpp</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ardGPIO.cpp</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ardUSART.cpp</name>
-    </file>
     <file>
       <name>$PROJ_DIR$\main.cpp</name>
     </file>

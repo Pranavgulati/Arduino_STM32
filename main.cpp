@@ -39,9 +39,13 @@ RCC_ClocksTypeDef RCC_Clocks;
   pinMode(GPIOC,8,ARD_OUTPUT);
   pinMode(GPIOC,9,ARD_OUTPUT);
   pinMode(GPIOA,4,ARD_INPUT);
+  pinMode(GPIOB,4,ARD_INPUT);
+  pinMode(GPIOC,4,ARD_INPUT);
   pinMode(GPIOA,5,ARD_INPUT);
   //PA10:PA9::RX:TX
   Serial.begin(COM1,115200);
+  digitalWrite(GPIOC,8,ARD_HIGH);
+  
   while(1)
   {
     int a =analogRead(GPIOC,8);
@@ -53,7 +57,7 @@ RCC_ClocksTypeDef RCC_Clocks;
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
     else{digitalWrite(GPIOC,9,ARD_LOW);}
     
-    //Serial_println("HELLO");
+    //Serial.println("HELLO");
     Serial.print(1656,ARD_DEC);
     delay(10);
     if(Serial.available()){

@@ -136,6 +136,7 @@ void USART1_IRQHandler(void){
 void ADC1_COMP_IRQHandler(void){
 extern int *ADC_data;
 *ADC_data= ADC_GetConversionValue(ADC1);
+ADC_ClearITPendingBit(ADC1, ADC_IT_EOC);
 }
 /**
   * @}

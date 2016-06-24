@@ -45,7 +45,7 @@
         </option>
         <option>
           <name>MemFile</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\CONFIG\debugger\ST\STM32F030x8.ddf</state>
         </option>
         <option>
           <name>RunToEnable</name>
@@ -85,7 +85,7 @@
         </option>
         <option>
           <name>OCDynDriverList</name>
-          <state>STLINK_ID</state>
+          <state>ARMSIM_ID</state>
         </option>
         <option>
           <name>OCLastSavedByProductVersion</name>
@@ -117,7 +117,7 @@
         </option>
         <option>
           <name>FlashLoadersV3</name>
-          <state>$TOOLKIT_DIR$\config\flashloader\</state>
+          <state>$TOOLKIT_DIR$\config\flashloader\ST\FlashSTM32F03xx8.board</state>
         </option>
         <option>
           <name>OCImagesSuppressCheck1</name>
@@ -1188,7 +1188,7 @@
         </option>
         <option>
           <name>CCSTLinkInterfaceRadio</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCSTLinkInterfaceCmdLine</name>
@@ -1438,7 +1438,7 @@
         </option>
         <option>
           <name>OCLastSavedByProductVersion</name>
-          <state></state>
+          <state>7.30.1.7765</state>
         </option>
         <option>
           <name>OCDownloadAttachToProgram</name>
@@ -1466,7 +1466,7 @@
         </option>
         <option>
           <name>FlashLoadersV3</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\config\flashloader\</state>
         </option>
         <option>
           <name>OCImagesSuppressCheck1</name>
