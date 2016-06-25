@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=782011235
+Checksum=-107837625
 [stlink]
 stlinkserialNo=2798FD0D
 stlinkfoundProbes=

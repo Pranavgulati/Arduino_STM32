@@ -8,6 +8,7 @@ DAC_DeInit();
 
 }
 void dac::begin(uint8_t chan){
+  dac::channel= chan;
   DAC_InitTypeDef    DAC_InitStructure;
   GPIO_InitTypeDef   GPIO_InitStructure;
 
@@ -31,7 +32,7 @@ void dac::begin(uint8_t chan){
 
   DAC_Init(DAC_Channel_2&(chan<<1), &DAC_InitStructure);
   DAC_Cmd(DAC_Channel_2&(chan<<1), ENABLE);
-  dac::channel= chan;
+  
   DAC_SoftwareTriggerCmd(DAC_Channel_2&(chan<<1),ENABLE);
 }
 

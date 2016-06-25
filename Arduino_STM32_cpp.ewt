@@ -175,6 +175,9 @@
     <file>
       <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c</name>
     </file>
+    <configuration>
+      <name>Debug</name>
+    </configuration>
   </group>
   <group>
     <name>EWARM</name>
@@ -268,6 +271,9 @@
     <file>
       <name>$PROJ_DIR$\..\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_wwdg.c</name>
     </file>
+    <configuration>
+      <name>Debug</name>
+    </configuration>
   </group>
   <group>
     <name>User</name>
@@ -275,7 +281,7 @@
       <name>$PROJ_DIR$\main.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\stm32f0xx_it.c</name>
+      <name>$PROJ_DIR$\stm32f0xx_it.cpp</name>
     </file>
   </group>
 </project>

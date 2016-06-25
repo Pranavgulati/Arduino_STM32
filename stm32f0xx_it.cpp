@@ -111,13 +111,13 @@ void SysTick_Handler(void)
 {
 }*/
 void USART1_IRQHandler(void){
-//to ensure only receive interrupt is handled
   if(USART_GetITStatus(Serial.USART, USART_IT_RXNE) != RESET){
+    //RXNE flag is cleared when the buffer is read so no clear reqd.
   uint16_t d = 0;
     //disable other interrupts for the time being or mayb stm32 does it itself
     d=(uint16_t)(Serial.USART->RDR & (uint16_t)0x01FF);;
     // if buffer full, set the overflow flag and return
-    uint8_t next = (Serial.recvBuf_tail + 1) % RECV_BUF_LEN;
+    uint8_t next = (Serial.recvBuf_tail + 1) % RX_BUF_LEN;
     if (next != Serial.recvBuf_head)
     {
       // save new data in buffer: tail points to where byte goes
@@ -129,13 +129,22 @@ void USART1_IRQHandler(void){
       //buffer overflow happened but circular buffer so we can let it pass
       //_buffer_overflow = true;
     }
-  //RXNE flag is cleared when the buffer is read so no clear reqd.
+  
+  }
+  else if(USART_GetITStatus(Serial.USART, USART_IT_TC) != RESET){
+        //TC flag to be cleared     
+    USART_ClearFlag(Serial.USART,USART_IT_TC);
+    if (Serial.txBuf_head == Serial.txBuf_tail){ return ;}
+    else{
+       USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);
+       Serial.txBuf_head = (Serial.txBuf_head + 1) % TX_BUF_LEN; 
+        } 
   }
 }
 
 void ADC1_COMP_IRQHandler(void){
-extern int *ADC_data;
-*ADC_data= ADC_GetConversionValue(ADC1);
+extern int *__ADC_data;
+*__ADC_data= ADC_GetConversionValue(ADC1);
 ADC_ClearITPendingBit(ADC1, ADC_IT_EOC);
 }
 /**

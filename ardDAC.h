@@ -10,6 +10,7 @@ public:
   //channel : 0,1
   void begin(uint8_t chan);
   void begin();
+  
   void out(uint16_t data);
   
 

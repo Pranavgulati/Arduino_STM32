@@ -12,7 +12,7 @@ ADC_IN10..ADC_IN15      :: PC0..PC5
 call is made by pin name and not channel name
 NO CLASS for this lib
 */
-extern int* ADC_data;
+extern int* __ADC_data;
 uint8_t analogRead(GPIO_TypeDef* port,uint8_t pin,int* data,uint8_t bits);
 int analogRead(GPIO_TypeDef* port,uint8_t pin,uint8_t bits);
 //on demand conversion

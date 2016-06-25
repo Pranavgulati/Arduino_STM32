@@ -45,32 +45,34 @@ RCC_ClocksTypeDef RCC_Clocks;
   //PA10:PA9::RX:TX
   Serial.begin(COM1,115200);
   digitalWrite(GPIOC,8,ARD_HIGH);
-  
+  //port GPIOA  pin 0-7 
+  //port GPIOB  pin 0,1 
+  //port GPIOC  pin 0-5 
   while(1)
   {
-    int a =analogRead(GPIOC,8);
+    //int a =analogRead(GPIOC,8);
     int temp=0;
-    analogRead(GPIOC,8,&temp);
+    analogRead(GPIOB,1,&temp);
     uint16_t  input=0;
     if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
     else{digitalWrite(GPIOC,8,ARD_LOW);}
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
     else{digitalWrite(GPIOC,9,ARD_LOW);}
     
-    //Serial.println("HELLO");
+    Serial.println("HELLO");
     Serial.print(1656,ARD_DEC);
-    delay(10);
+    //delay(10);
     if(Serial.available()){
     //be sure to Serial_begin with the port that you intend to listen on
    input = Serial.read();
     }
     if(input=='B'){
     digitalWrite(GPIOC,8,ARD_HIGH);
-    delay(10);
+//    delay(10);
     digitalWrite(GPIOC,8,ARD_LOW);
-    delay(10);
+ //   delay(10);
     }
-    delay(1);
+   // delay(1);
   }
 }
 

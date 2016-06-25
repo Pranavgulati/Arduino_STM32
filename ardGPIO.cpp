@@ -3,7 +3,7 @@
 
 /*
   @param
-port: 0-3,5 :: A,B,C,D,F
+port: GPIOA,B,C,D,F
 pin: 0-15
 mode:0-3
 

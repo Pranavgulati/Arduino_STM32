@@ -7,7 +7,6 @@ serial Serial;
 void serial::stop(){
 USART_DeInit(Serial.USART);
 }
-
 void serial::stopAll(){
 USART_DeInit(USART1);
 USART_DeInit(USART2);
@@ -22,11 +21,16 @@ USART_DeInit(USART4);
 @retval None
 */
 void serial::begin(uint8_t COMPORT,uint32_t baudRate){
+  recvBuf_tail=0;
+  recvBuf_head=0;
+  txBuf_tail=0;
+  txBuf_head=0;
   USART_TypeDef* USART =USART1;
   USART_InitTypeDef USART_properties;
   GPIO_TypeDef* gpioPort=GPIOA;
   uint8_t RXpin=10,TXpin=9;
   uint32_t usartClock=RS232_COM1_CLK;
+  
   switch(COMPORT){
     case COM1:
       USART =USART1;
@@ -76,31 +80,38 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
 }
  
 void serial::write(uint8_t Data){
+  USART_SendData(Serial.USART,Data);
+}
+void serial::write(uint8_t *data,uint32_t size){
+     //disable other interrupts for the time being or mayb stm32 does it itself
+    // if buffer full, then wait for it to empty
+  for(int i=0;i<size;i++){
+    uint8_t next = (Serial.txBuf_tail + 1) % TX_BUF_LEN;
+    if (next != Serial.txBuf_head)
+    {
+      // save new data in buffer: tail points to where byte goes
+      Serial.txBuf[Serial.txBuf_tail] = (*(data++)); // save new byte
+      Serial.txBuf_tail= next;
+    } 
+    /*
+      by doing this when 'i' is incremented the code will try again to 
+      assign data into the buffer,and the loop will not end until the buffer 
+      has been sent
+      this is a partially blocking write but it should work since the TC happens
+      fast and the buffer is cleared as its written    
+    */
+    else 
+    {
+      i--;      
+    }
+  }
   
-  USART_SendData(USART1,Data);
 }
-
-uint16_t serial::read(){
-  
-  // Empty buffer?
-if (Serial.recvBuf_head == Serial.recvBuf_tail){ return -1;}
-  // Read from "head"
-  uint8_t d = Serial.recvBuf[Serial.recvBuf_head]; // grab next byte
-  Serial.recvBuf_head = (Serial.recvBuf_head + 1) % RECV_BUF_LEN;
-  return d;
-}
-
-
-uint8_t serial::available(){
-  return (Serial.recvBuf_tail + RECV_BUF_LEN - Serial.recvBuf_head) % RECV_BUF_LEN;
-}
-
 
 //BIN,HEX,DEC,normal(-1)
-
 void serial::print(unsigned long data,uint8_t mode){
     unsigned long int mask=0;
-    uint8_t characters[10];
+    uint8_t characters[10]={0};
     uint8_t flag=0;
     switch(mode){
     case ARD_BIN:
@@ -141,40 +152,49 @@ void serial::print(unsigned long data,uint8_t mode){
 
 
 }
-
 void serial::print(const char* data){
   int temp =strlen(data);
-    for (int i=0;i<strlen((const char*)data);i++){
+    for (int i=0;i<temp;i++){
     write(*(data++));
     }
 }
-
-void serial::println(const char* data){
-  print(data);
-  write('\n');
-}
-
-
 void serial::print(unsigned long data){
       print((uint8_t)data,ARD_DEC);
 }  
-
 void serial::print(int data){
       print((uint8_t)data,ARD_DEC);
 }  
 
+void serial::println(int data){
+
+print(data);
+  write('\n');
+}
 void serial::println(unsigned long data){
 print(data);
 write('\n');
-}
-void serial::println(int data){
-print(data);
-  write('\n');
 }
 void serial::println(unsigned long data,uint8_t mode){
 
   print(data);
   write('\n');
 }
+void serial::println(const char* data){
+  print(data);
+  write('\n');
+}
 
+
+uint16_t serial::read(){
+  
+  // Empty buffer?
+if (Serial.recvBuf_head == Serial.recvBuf_tail){ return -1;}
+  // Read from "head"
+  uint8_t d = Serial.recvBuf[Serial.recvBuf_head]; // grab next byte
+  Serial.recvBuf_head = (Serial.recvBuf_head + 1) % RX_BUF_LEN;
+  return d;
+}
+uint8_t serial::available(){
+  return (Serial.recvBuf_tail + RX_BUF_LEN - Serial.recvBuf_head) % RX_BUF_LEN;
+}
 
