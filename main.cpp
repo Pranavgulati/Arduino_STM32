@@ -5,6 +5,7 @@
 #include <ardGPIO.h>
 #include <ardUSART.h>
 #include <ardADC.h>
+#include <ardDAC.h>
 
 static __IO uint32_t TimingDelay;
 
@@ -72,6 +73,8 @@ RCC_ClocksTypeDef RCC_Clocks;
     digitalWrite(GPIOC,8,ARD_LOW);
  //   delay(10);
     }
+    Dac.begin();
+    Dac.out(250);
    // delay(1);
   }
 }
