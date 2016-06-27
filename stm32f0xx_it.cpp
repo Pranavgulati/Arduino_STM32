@@ -133,7 +133,7 @@ void USART1_IRQHandler(void){
   }
   else if(USART_GetITStatus(Serial.USART, USART_IT_TC) != RESET){
         //TC flag to be cleared     
-    USART_ClearFlag(Serial.USART,USART_IT_TC);
+    USART_ClearITPendingBit(Serial.USART,  USART_IT_TC);
     if (Serial.txBuf_head == Serial.txBuf_tail){ return ;}
     else{
        USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);

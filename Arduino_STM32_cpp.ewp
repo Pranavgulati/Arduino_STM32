@@ -99,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>STM32F030x8	ST STM32F030x8</state>
+          <state>STM32F051x8	ST STM32F051x8</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -179,7 +179,7 @@
         </option>
         <option>
           <name>CCPreprocFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCPreprocComments</name>
@@ -191,11 +191,11 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
@@ -207,7 +207,7 @@
         </option>
         <option>
           <name>CCListAssSource</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCEnableRemarks</name>
@@ -280,7 +280,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -311,6 +311,7 @@
           <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK</state>
           <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK\HD44780_Framework</state>
           <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK\Acc</state>
+          <state>$PROJ_DIR$\Libraries</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -700,7 +701,7 @@
         </option>
         <option>
           <name>IlinkLogInitialization</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkLogModule</name>
@@ -716,11 +717,11 @@
         </option>
         <option>
           <name>IlinkIcfOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$TOOLKIT_DIR$\config\linker\ST\stm32f030x8.icf</state>
+          <state>C:\Users\Pranav\Documents\IAR Embedded Workbench\IAR-STM32F051R8-SK\Arduino_STM32_cpp\config\stm32f0xx_flash.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -891,7 +892,7 @@
         </option>
         <option>
           <name>IlinkOptUseVfe</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkOptForceVfe</name>
@@ -2159,22 +2160,280 @@
   <group>
     <name>EWARM</name>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.S</name>
+      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.s</name>
     </file>
+    <configuration>
+      <name>Debug</name>
+      <settings>
+        <name>ICCARM</name>
+        <data>
+          <version>31</version>
+          <wantNonLocal>0</wantNonLocal>
+          <debug>1</debug>
+          <option>
+            <name>CCOptimizationNoSizeConstraints</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCDefines</name>
+            <state>USE_STDPERIPH_DRIVER</state>
+            <state>STM32F0XX</state>
+            <state>USE_IAR_STM32F0XX_KSK</state>
+            <state>USE_DEFAULT_TIMEOUT_CALLBACK</state>
+          </option>
+          <option>
+            <name>CCPreprocFile</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCPreprocComments</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCPreprocLine</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCListCFile</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCListCMnemonics</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCListCMessages</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCListAssFile</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCListAssSource</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCEnableRemarks</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCDiagSuppress</name>
+            <state></state>
+          </option>
+          <option>
+            <name>CCDiagRemark</name>
+            <state></state>
+          </option>
+          <option>
+            <name>CCDiagWarning</name>
+            <state></state>
+          </option>
+          <option>
+            <name>CCDiagError</name>
+            <state></state>
+          </option>
+          <option>
+            <name>CCObjPrefix</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCAllowList</name>
+            <version>1</version>
+            <state>00000000</state>
+          </option>
+          <option>
+            <name>CCDebugInfo</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IEndianMode</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IProcessor</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IExtraOptionsCheck</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IExtraOptions</name>
+            <state></state>
+          </option>
+          <option>
+            <name>CCLangConformance</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCSignedPlainChar</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCRequirePrototypes</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCMultibyteSupport</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCDiagWarnAreErr</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCCompilerRuntimeInfo</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IFpuProcessor</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>OutputFile</name>
+            <state>$FILE_BNAME$.o</state>
+          </option>
+          <option>
+            <name>CCLibConfigHeader</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>PreInclude</name>
+            <state></state>
+          </option>
+          <option>
+            <name>CompilerMisraOverride</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCIncludePath2</name>
+            <state>$PROJ_DIR$\</state>
+            <state>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Include</state>
+            <state>$PROJ_DIR$\..\Libraries\STM32F0xx_StdPeriph_Driver\inc</state>
+            <state>$PROJ_DIR$\..\Libraries\STM32F0xx_CPAL_Driver\inc</state>
+            <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK</state>
+            <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK\HD44780_Framework</state>
+            <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK\Acc</state>
+            <state>$PROJ_DIR$\Libraries</state>
+          </option>
+          <option>
+            <name>CCStdIncCheck</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCCodeSection</name>
+            <state>.text</state>
+          </option>
+          <option>
+            <name>IInterwork2</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IProcessorMode2</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>CCOptLevel</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCOptStrategy</name>
+            <version>0</version>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCOptLevelSlave</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CompilerMisraRules98</name>
+            <version>0</version>
+            <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+          </option>
+          <option>
+            <name>CompilerMisraRules04</name>
+            <version>0</version>
+            <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+          </option>
+          <option>
+            <name>CCPosIndRopi</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCPosIndRwpi</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCPosIndNoDynInit</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IccLang</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IccCDialect</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IccAllowVLA</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IccCppDialect</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IccExceptions</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IccRTTI</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IccStaticDestr</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IccCppInlineSemantics</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>IccCmsis</name>
+            <state>1</state>
+          </option>
+          <option>
+            <name>IccFloatSemantics</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCNoLiteralPool</name>
+            <state>0</state>
+          </option>
+          <option>
+            <name>CCOptStrategySlave</name>
+            <version>0</version>
+            <state>0</state>
+          </option>
+        </data>
+      </settings>
+    </configuration>
   </group>
   <group>
     <name>Libraries</name>
     <file>
-      <name>$PROJ_DIR$\ardADC.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardADC.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\ardDAC.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardDAC.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\ardGPIO.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardGPIO.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\ardUSART.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardUSART.cpp</name>
     </file>
   </group>
   <group>
@@ -2505,6 +2764,27 @@
         </data>
       </settings>
     </configuration>
+  </group>
+  <group>
+    <name>USB_dev</name>
+    <excluded>
+      <configuration>Debug</configuration>
+    </excluded>
+    <file>
+      <name>$PROJ_DIR$\Libraries\stm32f0xx_usb.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\stm32f0xx_usb.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\USB.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\usb_requests.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\usb_standard.h</name>
+    </file>
   </group>
   <group>
     <name>User</name>

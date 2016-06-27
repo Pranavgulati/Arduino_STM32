@@ -182,22 +182,25 @@
   <group>
     <name>EWARM</name>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.S</name>
+      <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.s</name>
     </file>
+    <configuration>
+      <name>Debug</name>
+    </configuration>
   </group>
   <group>
     <name>Libraries</name>
     <file>
-      <name>$PROJ_DIR$\ardADC.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardADC.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\ardDAC.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardDAC.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\ardGPIO.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardGPIO.cpp</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\ardUSART.cpp</name>
+      <name>$PROJ_DIR$\Libraries\ardUSART.cpp</name>
     </file>
   </group>
   <group>
@@ -274,6 +277,24 @@
     <configuration>
       <name>Debug</name>
     </configuration>
+  </group>
+  <group>
+    <name>USB_dev</name>
+    <file>
+      <name>$PROJ_DIR$\Libraries\stm32f0xx_usb.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\stm32f0xx_usb.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\USB.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\usb_requests.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\usb_standard.h</name>
+    </file>
   </group>
   <group>
     <name>User</name>

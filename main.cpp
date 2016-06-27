@@ -7,6 +7,11 @@
 #include <ardADC.h>
 #include <ardDAC.h>
 
+#define SIMULATOR ~(0)
+#ifdef SIMULATOR
+
+#endif
+
 static __IO uint32_t TimingDelay;
 
 void delayResolution100us(Int32U delay)
@@ -45,15 +50,23 @@ RCC_ClocksTypeDef RCC_Clocks;
   pinMode(GPIOA,5,ARD_INPUT);
   //PA10:PA9::RX:TX
   Serial.begin(COM1,115200);
+  digitalWrite(GPIOC,8,ARD_LOW);
+  digitalWrite(GPIOC,9,ARD_LOW);
   digitalWrite(GPIOC,8,ARD_HIGH);
+  digitalWrite(GPIOC,9,ARD_HIGH);
   //port GPIOA  pin 0-7 
   //port GPIOB  pin 0,1 
   //port GPIOC  pin 0-5 
+  int temp=0;
+  //interrupt based adc 
+  analogRead(GPIOB,1,&temp);
   while(1)
   {
-    //int a =analogRead(GPIOC,8);
-    int temp=0;
-    analogRead(GPIOB,1,&temp);
+   #ifdef SIMULATOR
+    int a =analogRead(GPIOC,8);
+  #endif
+    
+    
     uint16_t  input=0;
     if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
     else{digitalWrite(GPIOC,8,ARD_LOW);}
@@ -62,14 +75,18 @@ RCC_ClocksTypeDef RCC_Clocks;
     
     Serial.println("HELLO");
     Serial.print(1656,ARD_DEC);
-    //delay(10);
+    #ifdef SIMULATOR
+   // delay(10);
+#endif
     if(Serial.available()){
     //be sure to Serial_begin with the port that you intend to listen on
    input = Serial.read();
     }
     if(input=='B'){
     digitalWrite(GPIOC,8,ARD_HIGH);
-//    delay(10);
+#ifdef SIMULATOR
+   // delay(10);
+#endif
     digitalWrite(GPIOC,8,ARD_LOW);
  //   delay(10);
     }

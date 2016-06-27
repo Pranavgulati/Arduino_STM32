@@ -38,7 +38,7 @@ void pinMode(GPIO_TypeDef* port, uint8_t pin,uint8_t mode,uint8_t PUPD,uint8_t s
   GPIO_InitStructure.GPIO_Speed = (GPIOSpeed_TypeDef)speed;
   GPIO_InitStructure.GPIO_OType = (GPIOOType_TypeDef)outputType;
   GPIO_Init(port, &GPIO_InitStructure);
-  port->BSRR = ((uint16_t)0x0001)<<pin;
+  //port->BSRR = ((uint16_t)0x0001)<<pin;
  
 
 }

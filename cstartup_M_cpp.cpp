@@ -114,7 +114,7 @@ __weak void PendSV::Handler()       { while (1) {} }
 __weak void SystemTick::Handler()      { while (1) {} }
 
 
-extern "C" void __cmain( void );
+extern "C"  void __cmain( void );
 extern "C" __weak void __iar_init_core( void );
 extern "C" __weak void __iar_init_vfp( void );
 

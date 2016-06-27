@@ -67,6 +67,7 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
   Serial.USART_props->USART_BaudRate=baudRate;
   USART_Init(Serial.USART,Serial.USART_props);
   USART_ITConfig(Serial.USART,USART_IT_RXNE,  ENABLE);
+  USART_ITConfig(Serial.USART,USART_IT_TC,  ENABLE);
   USART_Cmd(Serial.USART,ENABLE);
   //interrupts are registered only for USART1 and is considered the default port
   //PRO users may change this as they want
@@ -79,9 +80,7 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
 
 }
  
-void serial::write(uint8_t Data){
-  USART_SendData(Serial.USART,Data);
-}
+
 void serial::write(uint8_t *data,uint32_t size){
      //disable other interrupts for the time being or mayb stm32 does it itself
     // if buffer full, then wait for it to empty
@@ -105,7 +104,12 @@ void serial::write(uint8_t *data,uint32_t size){
       i--;      
     }
   }
-  
+//initiating transmission
+  USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);
+  Serial.txBuf_head = (Serial.txBuf_head + 1) % TX_BUF_LEN; 
+}
+void serial::write(uint8_t Data){
+  write(&Data,sizeof(Data));
 }
 
 //BIN,HEX,DEC,normal(-1)
@@ -198,3 +202,11 @@ uint8_t serial::available(){
   return (Serial.recvBuf_tail + RX_BUF_LEN - Serial.recvBuf_head) % RX_BUF_LEN;
 }
 
+void serial::clearTx(){
+  txBuf_tail=0;
+  txBuf_head=0;
+}
+void serial::clearRx(){
+ recvBuf_tail=0;
+ recvBuf_head=0;
+}

@@ -34,6 +34,7 @@ void begin(uint8_t COMPORT,uint32_t baudRate);
 void write(uint8_t data);
 //interrupt based write,set and forget if TX_BUF_LEN is not exceeded
 void write(uint8_t *data,uint32_t size);
+void clearTx();
 
 //all the folowing use the blocking write
 void print(const char *data);
@@ -48,6 +49,7 @@ void println(unsigned long data,uint8_t mode);
 
 //RX functions
 uint16_t read();
+void clearRx();
 uint8_t available();
 
 };
