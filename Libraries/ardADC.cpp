@@ -7,7 +7,7 @@ ADC_IN10..ADC_IN15      :: PC0..PC5
 pin can have values 0-7
 example analogRead(GPIOB,1);this  reads channel 9
 */
-int *__ADC_data;
+int *__ADC_data = new int ;
 //bits is 12 10 8 or 6
 int analogRead(GPIO_TypeDef* port,uint8_t pin,uint8_t bits){
 //add assert param so that the pin parameter has correct values only
@@ -156,8 +156,17 @@ int analogRead(GPIO_TypeDef* port,uint8_t pin){
   return analogRead(port,pin,12);
 }
 
-
+//interrupt based adc 
+//must be called again if some other analogRead was called after this call
+  
 int analogRead(GPIO_TypeDef* port,uint8_t pin,int* data){
  return analogRead(port,pin,data,12);
 }
 
+void analogReadIT(GPIO_TypeDef* port,uint8_t pin){
+  
+analogRead(port,pin,__ADC_data);
+}
+int analogReadIT(){
+return *__ADC_data;
+}

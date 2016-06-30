@@ -7,10 +7,8 @@
 #include <ardADC.h>
 #include <ardDAC.h>
 
-#define SIMULATOR ~(0)
-#ifdef SIMULATOR
+#define SIMULATOR ~(1)
 
-#endif
 
 static __IO uint32_t TimingDelay;
 
@@ -59,15 +57,16 @@ RCC_ClocksTypeDef RCC_Clocks;
   //port GPIOC  pin 0-5 
   int temp=0;
   //interrupt based adc 
-  analogRead(GPIOB,1,&temp);
+  //must be called again if some other analogRead was called after this statement
+  
+  analogReadIT(GPIOB,1);
+  
   while(1)
   {
-   #ifdef SIMULATOR
-    int a =analogRead(GPIOC,8);
-  #endif
-    
-    
-    uint16_t  input=0;
+   
+    //int a =analogRead(GPIOC,5);
+  int a=analogReadIT();
+    uint16_t input=0;
     if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
     else{digitalWrite(GPIOC,8,ARD_LOW);}
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
@@ -75,7 +74,7 @@ RCC_ClocksTypeDef RCC_Clocks;
     
     Serial.println("HELLO");
     Serial.print(1656,ARD_DEC);
-    #ifdef SIMULATOR
+    #if SIMULATOR
    // delay(10);
 #endif
     if(Serial.available()){
@@ -84,7 +83,7 @@ RCC_ClocksTypeDef RCC_Clocks;
     }
     if(input=='B'){
     digitalWrite(GPIOC,8,ARD_HIGH);
-#ifdef SIMULATOR
+#if SIMULATOR
    // delay(10);
 #endif
     digitalWrite(GPIOC,8,ARD_LOW);

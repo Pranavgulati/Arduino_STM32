@@ -24,7 +24,8 @@ this will be auto updating as well and will make sure that the data has
 the latest value always*/
 int analogRead(GPIO_TypeDef* port,uint8_t pin,int* data);
 
-
+void analogReadIT(GPIO_TypeDef* port,uint8_t pin);
+int analogReadIT();
 
 #ifdef __cplusplus
  extern "C" {
