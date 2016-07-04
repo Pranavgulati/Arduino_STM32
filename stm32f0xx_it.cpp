@@ -111,7 +111,9 @@ void SysTick_Handler(void)
 {
 }*/
 void USART1_IRQHandler(void){
-  if(USART_GetITStatus(Serial.USART, USART_IT_RXNE) != RESET){
+  
+  if(USART_GetITStatus(Serial.USART, USART_IT_RXNE) != RESET ){
+    USART_ClearFlag(Serial.USART,USART_IT_RXNE);
     //RXNE flag is cleared when the buffer is read so no clear reqd.
   uint16_t d = 0;
     //disable other interrupts for the time being or mayb stm32 does it itself
@@ -131,15 +133,18 @@ void USART1_IRQHandler(void){
     }
   
   }
-  else if(USART_GetITStatus(Serial.USART, USART_IT_TC) != RESET){
-        //TC flag to be cleared     
-    USART_ClearITPendingBit(Serial.USART,  USART_IT_TC);
-    if (Serial.txBuf_head == Serial.txBuf_tail){ return ;}
+ if(USART_GetITStatus(Serial.USART, USART_IT_TXE) != RESET){
+    //TC flag to be cleared     
+    USART_ClearFlag(Serial.USART,USART_FLAG_TC);
+    USART_ClearITPendingBit(Serial.USART,  USART_IT_TXE);
+    if (Serial.txBuf_head == Serial.txBuf_tail){ USART_ITConfig(Serial.USART,USART_IT_TXE,DISABLE);return ;}
     else{
-       USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);
-       Serial.txBuf_head = (Serial.txBuf_head + 1) % TX_BUF_LEN; 
-        } 
-  }
+      unsigned char c = Serial.txBuf[Serial.txBuf_head];
+      Serial.txBuf_head = (Serial.txBuf_head + 1) % TX_BUF_LEN;  
+      USART_SendData(Serial.USART,c);       
+    }      
+ }
+
 }
 
 void ADC1_COMP_IRQHandler(void){

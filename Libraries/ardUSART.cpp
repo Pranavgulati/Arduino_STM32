@@ -67,7 +67,6 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
   Serial.USART_props->USART_BaudRate=baudRate;
   USART_Init(Serial.USART,Serial.USART_props);
   USART_ITConfig(Serial.USART,USART_IT_RXNE,  ENABLE);
-  USART_ITConfig(Serial.USART,USART_IT_TC,  ENABLE);
   USART_Cmd(Serial.USART,ENABLE);
   //interrupts are registered only for USART1 and is considered the default port
   //PRO users may change this as they want
@@ -82,13 +81,18 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
  
 
 void serial::write(uint8_t *data,uint32_t size){
-     //disable other interrupts for the time being or mayb stm32 does it itself
-    // if buffer full, then wait for it to empty
+     
+    
   for(int i=0;i<size;i++){
+    
     uint8_t next = (Serial.txBuf_tail + 1) % TX_BUF_LEN;
-    if (next != Serial.txBuf_head)
+    int temp=USART_GetITStatus(Serial.USART, USART_IT_TXE)==SET;
+    if(Serial.txBuf_head== Serial.txBuf_tail && USART_GetITStatus(Serial.USART, USART_IT_TXE)==SET ){
+      USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);     
+    }
+    else if (next != Serial.txBuf_head)
     {
-      // save new data in buffer: tail points to where byte goes
+       // save new data in buffer: tail points to where byte goes
       Serial.txBuf[Serial.txBuf_tail] = (*(data++)); // save new byte
       Serial.txBuf_tail= next;
     } 
@@ -103,10 +107,12 @@ void serial::write(uint8_t *data,uint32_t size){
     {
       i--;      
     }
+    USART_ITConfig(Serial.USART,USART_IT_TXE,ENABLE);
+    USART_Cmd(Serial.USART,ENABLE);
+  
+  
+  
   }
-//initiating transmission
-  USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);
-  Serial.txBuf_head = (Serial.txBuf_head + 1) % TX_BUF_LEN; 
 }
 void serial::write(uint8_t Data){
   write(&Data,sizeof(Data));
@@ -163,10 +169,10 @@ void serial::print(const char* data){
     }
 }
 void serial::print(unsigned long data){
-      print((uint8_t)data,ARD_DEC);
+      print(data,ARD_DEC);
 }  
 void serial::print(int data){
-      print((uint8_t)data,ARD_DEC);
+      print(data,ARD_DEC);
 }  
 
 void serial::println(int data){

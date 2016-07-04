@@ -55,25 +55,25 @@ RCC_ClocksTypeDef RCC_Clocks;
   //port GPIOA  pin 0-7 
   //port GPIOB  pin 0,1 
   //port GPIOC  pin 0-5 
-  int temp=0;
   //interrupt based adc 
   //must be called again if some other analogRead was called after this statement
-  
-  analogReadIT(GPIOB,1);
-  
+  int temp;
+analogRead(GPIOB,1,&temp);
+  Dac.begin();
   while(1)
   {
-   
-    //int a =analogRead(GPIOC,5);
-  int a=analogReadIT();
+    //blocking analogRead
+    int a =analogRead(GPIOC,5); 
+    Serial.println("blabla");
+    Serial.println(65536,ARD_DEC);
+    Serial.println("tada");
     uint16_t input=0;
     if(digitalRead(GPIOA,4)!=0){digitalWrite(GPIOC,8,ARD_HIGH);}
     else{digitalWrite(GPIOC,8,ARD_LOW);}
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
     else{digitalWrite(GPIOC,9,ARD_LOW);}
     
-    Serial.println("HELLO");
-    Serial.print(1656,ARD_DEC);
+
     #if SIMULATOR
    // delay(10);
 #endif
@@ -82,16 +82,13 @@ RCC_ClocksTypeDef RCC_Clocks;
    input = Serial.read();
     }
     if(input=='B'){
-    digitalWrite(GPIOC,8,ARD_HIGH);
-#if SIMULATOR
-   // delay(10);
-#endif
-    digitalWrite(GPIOC,8,ARD_LOW);
- //   delay(10);
+    Serial.println("HELLO");
+    Serial.println(1656,ARD_DEC);
+    Serial.println("bye");
     }
-    Dac.begin();
-    Dac.out(250);
-   // delay(1);
+    
+ //   Dac.out(250);
+  // delay(1);
   }
 }
 
