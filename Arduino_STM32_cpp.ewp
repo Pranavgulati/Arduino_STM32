@@ -2427,6 +2427,9 @@
       <name>$PROJ_DIR$\Libraries\ardADC.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\Libraries\ardCRC.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Libraries\ardDAC.cpp</name>
     </file>
     <file>

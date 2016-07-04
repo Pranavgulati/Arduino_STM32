@@ -6,6 +6,7 @@
 #include <ardUSART.h>
 #include <ardADC.h>
 #include <ardDAC.h>
+#include <ardCRC.h>
 
 #define SIMULATOR ~(1)
 
@@ -22,6 +23,18 @@ void delay(__IO uint32_t nTime)
   //assert parameter nTime >10
   TimingDelay = nTime;
   while(TimingDelay != 0);
+}
+/**
+  * @brief  Decrements the TimingDelay variable.
+  * @param  None
+  * @retval None
+  */
+void TimingDelay_Decrement(void)
+{
+  if (TimingDelay != 0x00)
+  {
+    TimingDelay--;
+  }
 }
 
 int main(void)
@@ -55,11 +68,13 @@ RCC_ClocksTypeDef RCC_Clocks;
   //port GPIOC  pin 0-5 
   //interrupt based adc 
   //must be called again if some other analogRead was called after this statement
-  int temp;
-analogRead(GPIOB,1,&temp);
+  int temp=12345;
+  analogRead(GPIOB,1,&temp);
   Dac.begin();
+  Crc.begin();
   while(1)
   {
+     long int check=Crc.calcBlockCRC((uint32_t*)&temp,1);
     //blocking analogRead
     int a =analogRead(GPIOC,5); 
     Serial.println("blabla");
@@ -86,23 +101,35 @@ analogRead(GPIOB,1,&temp);
     delay(50);
     
     for(int i=0;i<4094;i++){Dac.out(i);delay(2);}
-    }
-}
-
-
-
-/**
-  * @brief  Decrements the TimingDelay variable.
-  * @param  None
-  * @retval None
-  */
-void TimingDelay_Decrement(void)
-{
-  if (TimingDelay != 0x00)
-  {
-    TimingDelay--;
+    
+  
   }
 }
+
+
+
+
+
+#ifdef  USE_FULL_ASSERT
+
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t* file, uint32_t line)
+{ 
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+
+  /* Infinite loop */
+  while (1)
+  {
+  }
+}
+#endif
 
 
 
