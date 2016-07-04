@@ -11,7 +11,7 @@ void dac::begin(uint8_t chan){
   dac::channel= chan;
   DAC_InitTypeDef    DAC_InitStructure;
   // Configure PA4 (DAC_OUT1) in analog mode ------------
-  pinMode(GPIOA,(1<<(4+channel)),GPIO_Mode_AN);
+  pinMode(GPIOA,4+channel,GPIO_Mode_AN);
  
   /* Enable DAC clock */
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);

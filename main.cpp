@@ -19,6 +19,7 @@ void delayResolution100us(Int32U delay)
 
 void delay(__IO uint32_t nTime)
 {
+  //assert parameter nTime >10
   TimingDelay = nTime;
   while(TimingDelay != 0);
 }
@@ -35,11 +36,8 @@ RCC_ClocksTypeDef RCC_Clocks;
      */
   /* SysTick end of count event each 10ms */
   RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 10);
+  SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000);
 
-  /* Initialize LEDs, Key Button, LCD and COM port(USART) available on
-     STM320518-EVAL board *****************************************************/
-  
   pinMode(GPIOC,8,ARD_OUTPUT);
   pinMode(GPIOC,9,ARD_OUTPUT);
   pinMode(GPIOA,4,ARD_INPUT);
@@ -73,10 +71,6 @@ analogRead(GPIOB,1,&temp);
     if(digitalRead(GPIOA,5)!=0){digitalWrite(GPIOC,9,ARD_HIGH);}
     else{digitalWrite(GPIOC,9,ARD_LOW);}
     
-
-    #if SIMULATOR
-   // delay(10);
-#endif
     if(Serial.available()){
     //be sure to Serial_begin with the port that you intend to listen on
    input = Serial.read();
@@ -86,10 +80,13 @@ analogRead(GPIOB,1,&temp);
     Serial.println(1656,ARD_DEC);
     Serial.println("bye");
     }
+    digitalWrite(GPIOC,8,ARD_HIGH);
+    delay(50);
+    digitalWrite(GPIOC,8,ARD_LOW);
+    delay(50);
     
- //   Dac.out(250);
-  // delay(1);
-  }
+    for(int i=0;i<4094;i++){Dac.out(i);delay(2);}
+    }
 }
 
 
