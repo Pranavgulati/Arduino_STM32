@@ -194,6 +194,9 @@
       <name>$PROJ_DIR$\Libraries\ardADC.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\Libraries\ardCOMP.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Libraries\ardCRC.cpp</name>
     </file>
     <file>

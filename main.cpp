@@ -63,20 +63,32 @@ RCC_ClocksTypeDef RCC_Clocks;
   digitalWrite(GPIOC,9,ARD_LOW);
   digitalWrite(GPIOC,8,ARD_HIGH);
   digitalWrite(GPIOC,9,ARD_HIGH);
+  
+     /*Only 32 bit input data CRC is calculated
+    so all data must be casted to 32bit pointer */
+   uint32_t CRCbuf[1]={12345};
+  
   //port GPIOA  pin 0-7 
   //port GPIOB  pin 0,1 
   //port GPIOC  pin 0-5 
   //interrupt based adc 
   //must be called again if some other analogRead was called after this statement
-  int temp=12345;
-  analogRead(GPIOB,1,&temp);
+  int temp[]={0};
+  analogRead(GPIOB,1,temp);
+  
   Dac.begin();
-  Crc.begin();
+  
   while(1)
   {
-     long int check=Crc.calcBlockCRC((uint32_t*)&temp,1);
+   Crc.begin();
+   /*Only 32 bit input data CRC is calculated
+    so all data must be casted to 32bit pointer */
+   long int check=Crc.calcBlockCRC(CRCbuf,sizeof(CRCbuf));
+   Crc.stop();
+     
     //blocking analogRead
-    int a =analogRead(GPIOC,5); 
+    //int a =analogRead(GPIOC,5); 
+   
     Serial.println("blabla");
     Serial.println(65536,ARD_DEC);
     Serial.println("tada");
@@ -96,9 +108,13 @@ RCC_ClocksTypeDef RCC_Clocks;
     Serial.println("bye");
     }
     digitalWrite(GPIOC,8,ARD_HIGH);
+#if SIMULATOR
     delay(50);
+#endif
     digitalWrite(GPIOC,8,ARD_LOW);
+    #if SIMULATOR
     delay(50);
+#endif
     
     for(int i=0;i<4094;i++){Dac.out(i);delay(2);}
     

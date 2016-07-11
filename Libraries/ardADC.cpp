@@ -8,6 +8,15 @@ pin can have values 0-7
 example analogRead(GPIOB,1);this  reads channel 9
 */
 int *__ADC_data = new int ;
+
+void analogStop(){
+ADC_DeInit(ADC1);//for STM32f03/5
+}
+
+void analogStop(ADC_TypeDef* ADCx){
+ADC_DeInit(ADCx);//for STM32f03/5
+}
+
 //bits is 12 10 8 or 6
 int analogRead(GPIO_TypeDef* port,uint8_t pin,uint8_t bits){
 //add assert param so that the pin parameter has correct values only
@@ -72,8 +81,10 @@ int analogRead(GPIO_TypeDef* port,uint8_t pin,uint8_t bits){
   /* ADC1 regular Software Start Conv */ 
   ADC_StartOfConversion(ADC1);
   while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)); 
-  return ADC_GetConversionValue(ADC1);
-
+  
+  int ADC_val =ADC_GetConversionValue(ADC1);
+analogStop(ADC1);
+return ADC_val;
 }
         
 uint8_t analogRead(GPIO_TypeDef* port,uint8_t pin,int* data,uint8_t bits){
@@ -163,10 +174,18 @@ int analogRead(GPIO_TypeDef* port,uint8_t pin,int* data){
  return analogRead(port,pin,data,12);
 }
 
+
+//the following fucntions unlike the one above where the memory is supplied by
+//the calling function
+//the following functions use the memory declared above and refresh that
 void analogReadIT(GPIO_TypeDef* port,uint8_t pin){
   
 analogRead(port,pin,__ADC_data);
 }
+//this function reads the memory that contains the adc data that is refreshed by interrupts
 int analogReadIT(){
 return *__ADC_data;
 }
+
+
+

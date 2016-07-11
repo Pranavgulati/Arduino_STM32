@@ -5,13 +5,14 @@
 
 class crc{
 public:
-void begin(uint32_t poly=0x4C11DB7);  
-
+  //polynomial cannot be changed for STM32f03 and STM32f05 series devices
+void begin(uint32_t poly);  
+void begin();  
+/*Only 32 bit input data CRC is calculated so all data must be casted to 32bits */
 unsigned long int  calcBlockCRC(uint32_t *CRCBuffer,uint32_t size);
+unsigned long int  calcCRC(uint32_t CRCBuffer);
 
-
-
-
+void stop();
 };
 extern crc Crc;
 
