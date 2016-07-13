@@ -206,6 +206,9 @@
       <name>$PROJ_DIR$\Libraries\ardGPIO.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\Libraries\ardTIM.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Libraries\ardUSART.cpp</name>
     </file>
   </group>

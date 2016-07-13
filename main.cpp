@@ -7,6 +7,7 @@
 #include <ardADC.h>
 #include <ardDAC.h>
 #include <ardCRC.h>
+#include <ardTIM.h>
 
 #define SIMULATOR ~(1)
 
@@ -77,7 +78,7 @@ RCC_ClocksTypeDef RCC_Clocks;
   analogRead(GPIOB,1,temp);
   
   Dac.begin();
-  
+  analogWrite(GPIOA,12,250);
   while(1)
   {
    Crc.begin();

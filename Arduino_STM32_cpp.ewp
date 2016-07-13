@@ -99,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>STM32F030x8	ST STM32F030x8</state>
+          <state>STM32F051x8	ST STM32F051x8</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -2437,6 +2437,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\Libraries\ardGPIO.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Libraries\ardTIM.cpp</name>
     </file>
     <file>
       <name>$PROJ_DIR$\Libraries\ardUSART.cpp</name>

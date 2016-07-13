@@ -7,6 +7,7 @@
 
 
 
+void analogWrite(GPIO_TypeDef* port,int pin,int value);
 
 
 
