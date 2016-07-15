@@ -78,7 +78,7 @@ RCC_ClocksTypeDef RCC_Clocks;
   analogRead(GPIOB,1,temp);
   
   Dac.begin();
-  analogWrite(GPIOA,12,250);
+  analogWrite(GPIOA,6,60);
   while(1)
   {
    Crc.begin();

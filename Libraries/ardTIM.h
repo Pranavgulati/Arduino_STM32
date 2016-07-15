@@ -6,10 +6,9 @@
 
 
 
-
+void PWMout(GPIO_TypeDef* port,int pin,int percentValue,int frequency);
+void PWMout(GPIO_TypeDef* port,int pin,int percentValue);
 void analogWrite(GPIO_TypeDef* port,int pin,int value);
-
-
 
 #ifdef __cplusplus
  extern "C" {
