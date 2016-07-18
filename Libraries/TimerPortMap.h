@@ -1,5 +1,5 @@
  // you havee to select timer,then its clock from port and pin 
-static unsigned int portAtimClkMap[16]={
+ unsigned int portAtimClkMap[16]={
     RCC_APB1Periph_TIM2,        //ch1
     RCC_APB1Periph_TIM2,        //ch2
     RCC_APB1Periph_TIM2,        //ch3
@@ -17,7 +17,7 @@ static unsigned int portAtimClkMap[16]={
     0,
     RCC_APB1Periph_TIM2,        //ch1
   };
- static   unsigned int portBtimClkMap[16]={
+    unsigned int portBtimClkMap[16]={
     RCC_APB1Periph_TIM3,        //ch3
     RCC_APB1Periph_TIM3,        //ch4
     0,                          //no timer
@@ -35,7 +35,7 @@ static unsigned int portAtimClkMap[16]={
     RCC_APB2Periph_TIM15,       //ch1
     RCC_APB2Periph_TIM15        //ch2
   };
- static    TIM_TypeDef* portAtimMap[16]={
+  TIM_TypeDef* portAtimMap[16]={
     TIM2,        //ch1          //conflicts with PA0,PA5,PA15
     TIM2,        //ch2          //conflicts with PA1,PB3
     TIM2,        //ch3          //conflicts with PA2,PB10
@@ -53,7 +53,7 @@ static unsigned int portAtimClkMap[16]={
     0,
     TIM2,        //ch1          //conflicts with PA0,PA5,PA15
   };
- static  TIM_TypeDef* portBtimMap[16]={
+  TIM_TypeDef* portBtimMap[16]={
     TIM3,        //ch3
     TIM3,        //ch4
     0,           //no timer
@@ -71,7 +71,7 @@ static unsigned int portAtimClkMap[16]={
     TIM15,       //ch1
     TIM15        //ch2
   };
-static   unsigned int portAchMap[16]={
+   unsigned int portAchMap[16]={
     1,        //ch1
     2,        //ch2
     3,        //ch3
@@ -89,7 +89,7 @@ static   unsigned int portAchMap[16]={
     0,
     1,        //ch1
   };
-   static unsigned int portBchMap[16]={
+    unsigned int portBchMap[16]={
     3,        //ch3
     4,        //ch4
     0,        //no timer
@@ -107,7 +107,7 @@ static   unsigned int portAchMap[16]={
     1,       //ch1
     2        //ch2
   };
-  static unsigned int portAtimAFMap[16]={
+   unsigned int portAtimAFMap[16]={
   GPIO_AF_2,
   GPIO_AF_2,
   GPIO_AF_2,
@@ -125,7 +125,7 @@ static   unsigned int portAchMap[16]={
   0,
   GPIO_AF_2
   };
-   static unsigned int portBtimAFMap[16]={
+    unsigned int portBtimAFMap[16]={
   GPIO_AF_1,
   GPIO_AF_1,
   0,

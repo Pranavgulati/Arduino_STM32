@@ -67,10 +67,10 @@ void PWMout(GPIO_TypeDef* port,int pin,int percentValue,int frequency){
     channelNumber=portBchMap[pin];
   }
   
-  if(IS_RCC_APB2_PERIPH(APBperiphClock)){
+  if(IS_TIM_LIST2_PERIPH(timerNumber)){
   RCC_APB2PeriphClockCmd(APBperiphClock, ENABLE);
   }
-  else if(IS_RCC_APB1_PERIPH(APBperiphClock)){
+  else if (!IS_TIM_LIST2_PERIPH(timerNumber)) {
   RCC_APB1PeriphClockCmd(APBperiphClock, ENABLE);
   }
   else{
@@ -85,7 +85,7 @@ void PWMout(GPIO_TypeDef* port,int pin,int percentValue,int frequency){
   RCC_AHBPeriphClockCmd(((uint32_t)0x00020000)<<clockShift, ENABLE);
  
   /* GPIO port structure config */
-  GPIO_InitStructure.GPIO_Pin = pin;
+  GPIO_InitStructure.GPIO_Pin = ((uint16_t)0x0001)<<pin;;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -130,7 +130,7 @@ void PWMout(GPIO_TypeDef* port,int pin,int percentValue,int frequency){
   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
   TIM_OCInitStructure.TIM_Pulse = CCR_val;
-  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
   
   switch(channelNumber){
   case 1:
@@ -164,7 +164,7 @@ PWMout( port, pin,value,10000);
 void PWMout(GPIO_TypeDef* port,int pin,int percentValue){
 PWMout( port, pin,percentValue,10000);
 }
-
+/*
 int  getFrequency(GPIO_TypeDef* port,int pin){
 
 //choose a timer for analog write here
@@ -173,7 +173,7 @@ int  getFrequency(GPIO_TypeDef* port,int pin){
   //only PA and PB are supported 
    //assert here that only port a or b is sent as the argument 
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-  TIM_ICInitTypeDef  TIM_ICInitStructure;
+  TIM_ICInitTypeDef  TIM_ICInitStruct;
   GPIO_InitTypeDef GPIO_InitStructure;
   //i wanted the map to be a portable unit so i did this
   //dont know how it affects performance though
@@ -206,45 +206,45 @@ int  getFrequency(GPIO_TypeDef* port,int pin){
   //ther is no available timer or there could be a conflict if the timer is 
   // operated at the at the requested pin and port combination
   //please try someother port and pin
-  return;
-  //also even if this test is passed it may happen 
+  return -1;
+  
   }
      //gpio clock
   int clockShift = (int)(((long int)port&0x00001C00)>>10);
   RCC_AHBPeriphClockCmd(((uint32_t)0x00020000)<<clockShift, ENABLE);
  
-  /* GPIO port structure config */
+  // GPIO port structure config 
   GPIO_InitStructure.GPIO_Pin = pin;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
   GPIO_Init(port, &GPIO_InitStructure); 
-  /* Connect TIM Channels to AF of pins */
+  //Connect TIM Channels to AF of pins 
   GPIO_PinAFConfig(port, pin, AFnumber);
 
   TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
-  TIM_ICStructInit(&TIM_ICInitStructure);
+  TIM_ICStructInit(&TIM_ICInitStruct);
 
  
-  /* TIMx Configuration ---------------------------------------------------
-   TIMxCLK = PCLK2 = SystemCoreClock
-   TIMxCLK = SystemCoreClock, Prescaler = 0, TIMx counter clock = SystemCoreClock
-   SystemCoreClock is set to 48 MHz for STM32F0xx devices
-   
-   Note: 
-    SystemCoreClock variable holds HCLK frequency and is defined in system_stm32f0xx.c file.
-    Each time the core clock (HCLK) changes, user had to call SystemCoreClockUpdate()
-    function to update SystemCoreClock variable value. Otherwise, any configuration
-    based on this variable will be incorrect. 
-  ----------------------------------------------------------------------- */
+//       TIMx Configuration ---------------------------------------------------
+//       TIMxCLK = PCLK2 = SystemCoreClock
+//       TIMxCLK = SystemCoreClock, Prescaler = 0, TIMx counter clock = SystemCoreClock
+//       SystemCoreClock is set to 48 MHz for STM32F0xx devices
+//       
+//       Note: 
+//        SystemCoreClock variable holds HCLK frequency and is defined in system_stm32f0xx.c file.
+//        Each time the core clock (HCLK) changes, user had to call SystemCoreClockUpdate()
+//        function to update SystemCoreClock variable value. Otherwise, any configuration
+//        based on this variable will be incorrect. 
+//      ----------------------------------------------------------------------- 
   
   uint16_t TimerPeriod = 0;
   uint16_t CCR_val = 0;
-  /* Compute the value to be set in ARR regiter to generate signal at given frequency  */
-  TimerPeriod = (SystemCoreClock / frequency ) - 1;
+  // Compute the value to be set in ARR regiter to generate signal at given frequency  
+  TimerPeriod = (SystemCoreClock / 100000 ) - 1;
 
-  /* Time Base configuration */
+  // Time Base configuration 
   TIM_TimeBaseStructure.TIM_Prescaler = 0;
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
   TIM_TimeBaseStructure.TIM_Period = TimerPeriod;
@@ -253,55 +253,55 @@ int  getFrequency(GPIO_TypeDef* port,int pin){
 
   TIM_TimeBaseInit(timerNumber, &TIM_TimeBaseStructure);
 
-  TIM_ICInitStructure.TIM_Channel = 4*(channelNumber-1);
-  TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
-  TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-  TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-  TIM_ICInitStructure.TIM_ICFilter = 0x0;
+  TIM_ICInitStruct.TIM_Channel = 4*(channelNumber-1);
+  TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;
+  TIM_ICInitStruct.TIM_ICSelection = TIM_ICSelection_DirectTI;
+  TIM_ICInitStruct.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+  TIM_ICInitStruct.TIM_ICFilter = 0x0;
   uint16_t icoppositepolarity = TIM_ICPolarity_Falling;
   uint16_t icoppositeselection = TIM_ICSelection_IndirectTI;
     
   switch(channelNumber){
   case 1:
-    /* TI1 Configuration */
-    TI1_Config(timerNumber, TIM_ICInitStruct->TIM_ICPolarity, TIM_ICInitStruct->TIM_ICSelection,
-               TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC1Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
-    /* TI2 Configuration */
-    TI2_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC2Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
+   //  TI1 Configuration 
+    TI1_Config(timerNumber, TIM_ICInitStruct.TIM_ICPolarity, TIM_ICInitStruct.TIM_ICSelection,
+               TIM_ICInitStruct.TIM_ICFilter);
+    // Set the Input Capture Prescaler value 
+    TIM_SetIC1Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
+     //TI2 Configuration 
+    TI2_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct.TIM_ICFilter);
+    //Set the Input Capture Prescaler value 
+    TIM_SetIC2Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
     break;
   case 2:
-    TI2_Config(timerNumber, TIM_ICInitStruct->TIM_ICPolarity, TIM_ICInitStruct->TIM_ICSelection,
-               TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC2Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
-    /* TI2 Configuration */
-    TI2_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC1Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
+    TI2_Config(timerNumber, TIM_ICInitStruct.TIM_ICPolarity, TIM_ICInitStruct.TIM_ICSelection,
+               TIM_ICInitStruct.TIM_ICFilter);
+     //Set the Input Capture Prescaler value 
+    TIM_SetIC2Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
+    //TI2 Configuration 
+    TI2_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct.TIM_ICFilter);
+     //Set the Input Capture Prescaler value 
+    TIM_SetIC1Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
     break;
   case 3 :
-     TI3_Config(timerNumber, TIM_ICInitStruct->TIM_ICPolarity, TIM_ICInitStruct->TIM_ICSelection,
-               TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC3Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
-    /* TI2 Configuration */
-    TI4_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC4Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
+     TI3_Config(timerNumber, TIM_ICInitStruct.TIM_ICPolarity, TIM_ICInitStruct.TIM_ICSelection,
+               TIM_ICInitStruct.TIM_ICFilter);
+    //Set the Input Capture Prescaler value 
+    TIM_SetIC3Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
+    /// TI2 Configuration 
+    TI4_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct.TIM_ICFilter);
+     //Set the Input Capture Prescaler value 
+    TIM_SetIC4Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
     break;
   case 4:
-    TI4_Config(timerNumber, TIM_ICInitStruct->TIM_ICPolarity, TIM_ICInitStruct->TIM_ICSelection,
-               TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC4Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
-    /* TI2 Configuration */
-    TI3_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct->TIM_ICFilter);
-    /* Set the Input Capture Prescaler value */
-    TIM_SetIC3Prescaler(timerNumber, TIM_ICInitStruct->TIM_ICPrescaler);
+    TI4_Config(timerNumber, TIM_ICInitStruct.TIM_ICPolarity, TIM_ICInitStruct.TIM_ICSelection,
+               TIM_ICInitStruct.TIM_ICFilter);
+     //Set the Input Capture Prescaler value 
+    TIM_SetIC4Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
+     //TI2 Configuration 
+    TI3_Config(timerNumber, icoppositepolarity, icoppositeselection, TIM_ICInitStruct.TIM_ICFilter);
+     //Set the Input Capture Prescaler value 
+    TIM_SetIC3Prescaler(timerNumber, TIM_ICInitStruct.TIM_ICPrescaler);
     break;
   default:
     //ERROOOORRR ssup?
@@ -309,23 +309,26 @@ int  getFrequency(GPIO_TypeDef* port,int pin){
   }
 
   
-  /* TIM enable counter */
+   //TIM enable counter 
   TIM_Cmd(timerNumber, ENABLE);
 //------------------------------------------------------
-  /* Enable the CC2 Interrupt Request */
+   //Enable the CC2 Interrupt Request 
   TIM_ITConfig(timerNumber, TIM_IT_CC1|TIM_IT_CC2|TIM_IT_CC3|TIM_IT_CC4|TIM_IT_Update, ENABLE);
   
-  /* Enable the TIM1 global Interrupt */
+   //Enable the TIM1 global Interrupt 
   NVIC_InitStructure.NVIC_IRQChannel = TIM1_CC_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 
-  /* TIM1 counter enable */
+  // TIM1 counter enable 
   TIM_Cmd(timerNumber, ENABLE);
 
-  /* TIM1 Main Output Enable */
+  // TIM1 Main Output Enable 
   TIM_CtrlPWMOutputs(timerNumber, ENABLE);
 
 
 }
+
+
+*/

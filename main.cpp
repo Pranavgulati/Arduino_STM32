@@ -78,9 +78,17 @@ RCC_ClocksTypeDef RCC_Clocks;
   analogRead(GPIOB,1,temp);
   
   Dac.begin();
-  analogWrite(GPIOA,6,60);
+  analogWrite(GPIOA,6,80);
+  analogWrite(GPIOA,7,70);
+  analogWrite(GPIOA,1,60);
+  analogWrite(GPIOA,2,50);
+  analogWrite(GPIOA,3,40);
   while(1)
   {
+  
+  
+  
+ 
    Crc.begin();
    /*Only 32 bit input data CRC is calculated
     so all data must be casted to 32bit pointer */
