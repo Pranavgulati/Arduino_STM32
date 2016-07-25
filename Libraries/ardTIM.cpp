@@ -1,13 +1,6 @@
 /*
 each timer register has a differnet set of avaialabilities 
-not even two general purpose timers have a common register map
-proposal
-1.make a class that has a union of all features and then initialize it for
-diff timers
-
-2. categorize code in specific functions IC/counting,OC/PWM,Pulse,base time
-then call these functions to do things
-this will therfore limit the things that are done with the library
+not even two general purpose timers have a common register map and available features
 
 analogWrite - fixed freq variable duty
 PWMout - duty nd freq control
@@ -22,7 +15,11 @@ pulseOut - width offset
 keep the following in the arduino.h lib so that this can be accessed in the future without timers
 attachInterrupt -timer events and others
 
-#2 sounds better and beautiful actually
+GPIOA 0,1,2,3,5,8,9,10,11,15
+GPIOA 4,6,7 can only PWMout and getFrequency and not getDuty
+
+GPIOB 0,1,3,4,5,10,11,14,15
+GPIOB 8,9 can only PWMout and getFrequency and not getDuty
 
 
 use TIM6 for event generations
@@ -34,7 +31,13 @@ use TIM 1/2/3 for pwm/input capture  most of the port A and B pins
 */
 
 #include <ardTIM.h>
-unsigned int *__freqPointer=new unsigned int;
+unsigned int *__freqPointer;
+unsigned int *__dutyPointer;
+TIM_TypeDef  *__ICtimerName;
+unsigned int  __risingChannelNo;
+unsigned int  __fallingChannelNo;
+unsigned int __ICdone=0;
+
 void PWMout(GPIO_TypeDef* port,int pin,int percentValue,int frequency){
   //choose a timer for analog write here
   //APB1 or APB2
@@ -165,8 +168,18 @@ void PWMout(GPIO_TypeDef* port,int pin,int percentValue){
 PWMout( port, pin,percentValue,10000);
 }
 
-uint8_t  getFrequency(GPIO_TypeDef* port,int pin,unsigned int *freqDataBuffer){
+uint8_t  getFrequency(GPIO_TypeDef* port,int pin,unsigned int *freqDataBuffer, unsigned int *dutyDataBuffer,unsigned int minSamples){
 __freqPointer=freqDataBuffer;
+__dutyPointer=dutyDataBuffer;
+  #include <TimerMapInput.h>
+  unsigned int APBperiphClock=0;
+  unsigned int AFnumber=0;
+  unsigned int timerNVIC=0;
+  TIM_TypeDef* timer=0;
+  unsigned int channelNumber=0;
+  int clockShift = (int)(((long int)port&0x00001C00)>>10);
+  uint16_t TimerPeriod = 0;
+
 //choose a timer for analog write here
   //APB1 or APB2
   //so timer selection happens on the basis of the port and pin 
@@ -178,15 +191,8 @@ __freqPointer=freqDataBuffer;
   NVIC_InitTypeDef NVIC_InitStructure;
   //i wanted the map to be a portable unit so i did this
   //dont know how it affects performance though
-  #include <TimerMapInput.h>
-  unsigned int APBperiphClock=0;
-  unsigned int AFnumber=0;
-  unsigned int timerNVIC=0;
-  TIM_TypeDef* timer=0;
-  unsigned int channelNumber=0;
-  int clockShift = (int)(((long int)port&0x00001C00)>>10);
-  uint16_t TimerPeriod = 0;
-  int risingChannelNo,fallingChannelNo;
+
+  
   //timer is selected based on the pins and port so
   
   if     (port==GPIOA){
@@ -195,6 +201,7 @@ __freqPointer=freqDataBuffer;
     timer=portAtimMap[pin];
     channelNumber=portAchMap[pin];
     timerNVIC=portAnvic[pin];
+    
   }
   else if(port==GPIOB){
     APBperiphClock=portBtimClkMap[pin];
@@ -203,7 +210,7 @@ __freqPointer=freqDataBuffer;
     channelNumber=portBchMap[pin];
     timerNVIC=portBnvic[pin];
   }
-  
+  __ICtimerName=timer;
   if(IS_TIM_LIST2_PERIPH(timer)){
   RCC_APB2PeriphClockCmd(APBperiphClock, ENABLE);
   }
@@ -260,26 +267,26 @@ __freqPointer=freqDataBuffer;
 
   switch(channelNumber){
   case 1:
-    risingChannelNo=1;
-    fallingChannelNo=2;
+    __risingChannelNo=1;
+    __fallingChannelNo=2;
     break;
   case 2:
-    risingChannelNo=2;
-    fallingChannelNo=1;
+    __risingChannelNo=2;
+    __fallingChannelNo=1;
     break;
   case 3:
-    risingChannelNo=3;
-    fallingChannelNo=4;
+    __risingChannelNo=3;
+    __fallingChannelNo=4;
     break;
   case 4:
-    risingChannelNo=4;
-    fallingChannelNo=3;
+    __risingChannelNo=4;
+    __fallingChannelNo=3;
     break;
 
   }
 
   
-  TIM_ICInitStruct.TIM_Channel = 4*(risingChannelNo-1);
+  TIM_ICInitStruct.TIM_Channel = 4*(__risingChannelNo-1);
   TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;
   TIM_ICInitStruct.TIM_ICSelection = TIM_ICSelection_DirectTI;
   TIM_ICInitStruct.TIM_ICPrescaler = TIM_ICPSC_DIV1;
@@ -287,7 +294,7 @@ __freqPointer=freqDataBuffer;
   
   TIM_ICInit(timer, &TIM_ICInitStruct);
   
-  TIM_ICInitStruct.TIM_Channel = 4*(fallingChannelNo-1);
+  TIM_ICInitStruct.TIM_Channel = 4*(__fallingChannelNo-1);
   TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;
   TIM_ICInitStruct.TIM_ICSelection = TIM_ICSelection_DirectTI;
   
@@ -297,7 +304,7 @@ __freqPointer=freqDataBuffer;
   TIM_Cmd(timer, ENABLE);
 //------------------------------------------------------
    
-  TIM_ITConfig(timer, (1<<risingChannelNo)|(1<<fallingChannelNo)|TIM_IT_Update, ENABLE);
+  TIM_ITConfig(timer, (1<<__risingChannelNo)|(1<<__fallingChannelNo)|TIM_IT_Update, ENABLE);
  
    //Enable the TIM1 global Interrupt 
   NVIC_InitStructure.NVIC_IRQChannel = timerNVIC;
@@ -311,7 +318,13 @@ __freqPointer=freqDataBuffer;
   }
   // TIM1 counter enable 
   TIM_Cmd(timer, ENABLE);
-
-return 1;//all went well
+while(__ICdone!=minSamples);
+if(__ICdone==minSamples){
+   TIM_ITConfig(timer, (1<<__risingChannelNo)|(1<<__fallingChannelNo)|TIM_IT_Update, DISABLE);
+   TIM_Cmd(timer, DISABLE);
+   return 1;//all went well
 }
+else{return 0;}
+}
+
 

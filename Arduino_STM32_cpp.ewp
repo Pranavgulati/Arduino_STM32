@@ -312,6 +312,9 @@
           <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK\HD44780_Framework</state>
           <state>$PROJ_DIR$\..\Utilities\IAR_STM32F0xx_KSK\Acc</state>
           <state>$PROJ_DIR$\Libraries</state>
+          <state>C:\Users\Pranav\Documents\IAR Embedded Workbench\IAR-STM32F051R8-SK\STM32F4_Libs\Libraries</state>
+          <state>C:\Users\Pranav\Documents\IAR Embedded Workbench\IAR-STM32F051R8-SK\STM32F4_Libs\Libraries\STM32F4xx_StdPeriph_Driver\inc</state>
+          <state>C:\Users\Pranav\Documents\IAR Embedded Workbench\IAR-STM32F051R8-SK\STM32F4_Libs\Libraries\CMSIS\Device\ST\STM32F4xx\Include</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>

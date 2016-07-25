@@ -15,8 +15,11 @@ unsigned int portAnvic[16]={
     0,                          //ch etr
     0,
     0,
-    RCC_APB1Periph_TIM2,        //ch1
+    TIM2_IRQn,        //ch1
   };
+
+//available timer input for input capture
+//PB 0,1,3,4,5
     unsigned int portBnvic[16]={
     TIM3_IRQn,        //ch3
     TIM3_IRQn,        //ch4

@@ -157,4 +157,68 @@ ADC_ClearITPendingBit(ADC1, ADC_IT_EOC);
   */
 
 
+  unsigned int updateCounter=0;
+  extern TIM_TypeDef * __ICtimerName;
+  extern unsigned int __risingChannelNo;
+  extern unsigned int __fallingChannelNo;
+  extern unsigned int *__freqPointer;
+  extern unsigned int *__dutyPointer;
+  extern unsigned int __ICdone;
+void TIM2_IRQHandler(){
+  
+
+  unsigned long long totalDutyCount=0;
+  unsigned long long totalFreqCount=0;
+  
+  
+  if(TIM_GetITStatus(__ICtimerName,TIM_IT_Update)){
+      TIM_ClearITPendingBit(__ICtimerName, TIM_IT_Update);
+    updateCounter++;
+  //do not alter the above variable anywhere in the following code
+  //add update event related code here  
+  }  
+  else if(TIM_GetITStatus(__ICtimerName,1<<__risingChannelNo)){
+      TIM_ClearITPendingBit(__ICtimerName, 1<<__risingChannelNo);
+  unsigned int* CCRrisePointer =(unsigned int*)__ICtimerName+ (((__risingChannelNo-1)*0x04)+0x34);
+  totalFreqCount= (updateCounter*0xFFFF)+ *CCRrisePointer;
+    //set the counter to 0 at rising edge
+    TIM_SetCounter(__ICtimerName,0x0000);
+  }
+  else if(TIM_GetITStatus(__ICtimerName,1<<__fallingChannelNo)){
+  TIM_ClearITPendingBit(__ICtimerName, 1<<__fallingChannelNo);
+  unsigned int* CCRfallPointer =(unsigned int*)__ICtimerName+ (((__fallingChannelNo-1)*0x04)+0x34);
+  
+    //reading the correct CCR register automatically
+     totalDutyCount =(updateCounter*0xFFFF)+ *CCRfallPointer;
+  //the total count now contains the width of the high pulse
+  
+  }
+  if(totalFreqCount){
+    *__dutyPointer = (totalDutyCount * 100) / totalFreqCount;
+    *__freqPointer = SystemCoreClock / totalFreqCount;
+    updateCounter=0;
+    __ICdone++;
+  }
+
+}
+
+
+
+void TIM1_BRK_UP_TRG_COM_IRQHandler(){
+TIM2_IRQHandler();
+}
+void TIM1_CC_IRQHandler(){
+TIM2_IRQHandler();
+}
+
+void TIM3_IRQHandler(){
+TIM2_IRQHandler();
+}
+
+void TIM15_IRQHandler(){
+TIM2_IRQHandler();
+}
+
+
+
 /******************* (C) COPYRIGHT 2012 STMicroelectronics *****END OF FILE****/

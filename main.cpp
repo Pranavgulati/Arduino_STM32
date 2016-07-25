@@ -80,10 +80,17 @@ RCC_ClocksTypeDef RCC_Clocks;
   analogWrite(GPIOA,3,40);
   while(1)
   {
-  
-  
-  
- 
+    unsigned int frequency[2]={0,0};
+    unsigned int duty[2]={0,0};
+    unsigned int minSamples=4;
+  //a blocking frequency measurement takes place which measures the freq minSamples times
+  //and stores the last sample in the buffer
+  if(getFrequency(GPIOB,3,&frequency[0],&duty[0],minSamples)==1){
+  //read the frequency from the buffer provided
+  }
+  if(getFrequency(GPIOB,1,&frequency[1],&duty[1],minSamples)==1){
+  //read the frequency from the buffer provided and do whatever you want
+  }
    Crc.begin();
    /*Only 32 bit input data CRC is calculated
     so all data must be casted to 32bit pointer */
