@@ -35,6 +35,7 @@
     RCC_APB2Periph_TIM15,       //ch1
     RCC_APB2Periph_TIM15        //ch2
   };
+
   TIM_TypeDef* portAtimMap[16]={
     TIM2,        //ch1          //conflicts with PA0,PA5,PA15
     TIM2,        //ch2          //conflicts with PA1,PB3

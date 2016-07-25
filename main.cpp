@@ -60,12 +60,7 @@ RCC_ClocksTypeDef RCC_Clocks;
   pinMode(GPIOA,5,ARD_INPUT);
   //PA10:PA9::RX:TX
   Serial.begin(COM1,115200);
-  digitalWrite(GPIOC,8,ARD_LOW);
-  digitalWrite(GPIOC,9,ARD_LOW);
-  digitalWrite(GPIOC,8,ARD_HIGH);
-  digitalWrite(GPIOC,9,ARD_HIGH);
-  
-     /*Only 32 bit input data CRC is calculated
+    /*Only 32 bit input data CRC is calculated
     so all data must be casted to 32bit pointer */
    uint32_t CRCbuf[1]={12345};
   
