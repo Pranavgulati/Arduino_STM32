@@ -5,7 +5,9 @@ stype API format, while retaining maximum flexibility
 
 
 # Pre-Requisites
-- this works as a STANDALONE project with IAR and is configured to have the stm32f0xx_stdperiph_lib/Libraries and stm32f0xx_stdperiph_lib/Utilities folder for the device just before the project directory or the folder where the repository is cloned.These folders are provided by ST micro from within the IAR Embedded Workbench
+- IAR Embedded Workbench
+- ST discovery board or otherwise (STM32F0x compatible boards preferrably STM32F051x8 on which i have tested everything)
 
 
 # THIS IS A WORK IN PROGRESS COLLABORATION IS MUCH APPRECIATED!!!
+- Sorry for being so loud but well its called shouting out for a reason :-D
