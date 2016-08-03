@@ -73,11 +73,11 @@ RCC_ClocksTypeDef RCC_Clocks;
   analogRead(GPIOB,1,temp);
   
   Dac.begin();
-  analogWrite(GPIOA,6,80);
-  analogWrite(GPIOA,7,70);
-  analogWrite(GPIOA,1,60);
-  analogWrite(GPIOA,2,50);
-  analogWrite(GPIOA,3,40);
+//  analogWrite(GPIOA,6,80);
+//  analogWrite(GPIOA,7,70);
+//  analogWrite(GPIOA,1,60);
+//  analogWrite(GPIOA,2,50);
+//  analogWrite(GPIOA,3,40);
   while(1)
   {
     unsigned int frequency[2]={0,0};
@@ -85,8 +85,9 @@ RCC_ClocksTypeDef RCC_Clocks;
     unsigned int minSamples=4;
   //a blocking frequency measurement takes place which measures the freq minSamples times
   //and stores the last sample in the buffer
-  if(getFrequency(GPIOB,3,&frequency[0],&duty[0],minSamples)==1){
+  if(getFrequency(GPIOB,0,&frequency[0],&duty[0],minSamples)==1){
   //read the frequency from the buffer provided
+    
   }
   if(getFrequency(GPIOB,1,&frequency[1],&duty[1],minSamples)==1){
   //read the frequency from the buffer provided and do whatever you want

@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-2092630312
+Checksum=954594995
 [stlink]
 stlinkserialNo=2798FD0D
 stlinkfoundProbes=
@@ -44,6 +44,17 @@ Sort=0
 [SfrWindow]
 Show=1 1
 Sort=4 0
+[Interrupts]
+Enabled=1
+[MemConfig]
+Base=1
+Manual=0
+Ddf=1
+TypeViol=0
+Stop=1
+[Simulator]
+Freq=10000000
+MultiCoreRunAll=1
 [struct_types]
 Fmt0=GPIO_TypeDef-MODER	4	0
 [watch_formats]
@@ -58,21 +69,12 @@ EventEXC=0
 EventFOLD=0
 EventLSU=0
 EventSLEEP=0
-[CallStackLog]
-Enabled=0
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
-[DriverProfiling]
-Enabled=0
-Mode=1
-Graph=0
-Symbiont=0
-Exclusions=
+[DataLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
 [InterruptLog]
 LogEnabled=0
 SumEnabled=0
@@ -80,30 +82,29 @@ GraphEnabled=0
 ShowTimeLog=1
 ShowTimeSum=1
 SumSortOrder=0
-[DataLog]
-LogEnabled=0
-SumEnabled=0
-GraphEnabled=0
-ShowTimeLog=1
-ShowTimeSum=1
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=3
+Graph=0
+Symbiont=0
+Exclusions=
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Count=0
-[Interrupts]
-Enabled=1
-[MemConfig]
-Base=1
-Manual=0
-Ddf=1
-TypeViol=0
-Stop=1
-[Trace1]
-Enabled=0
-ShowSource=1
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\main.cpp}.95.4" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\Libraries\ardTIM.cpp}.326.1" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_CODE" "{$PROJ_DIR$\Libraries\ardTIM.cpp}.325.3" 0 0 1 "" 0 "" 0
+Bp3=_ 1 "EMUL_CODE" "{$PROJ_DIR$\stm32f0xx_it.cpp}.202.5" 0 0 1 "" 0 "" 0
+Count=4
 [Aliases]
 Count=0
 SuppressDialog=0
-[Simulator]
-Freq=10000000
-MultiCoreRunAll=1

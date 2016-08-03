@@ -175,18 +175,12 @@
     <file>
       <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c</name>
     </file>
-    <configuration>
-      <name>Debug</name>
-    </configuration>
   </group>
   <group>
     <name>EWARM</name>
     <file>
       <name>$PROJ_DIR$\..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\iar\startup_stm32f0xx.s</name>
     </file>
-    <configuration>
-      <name>Debug</name>
-    </configuration>
   </group>
   <group>
     <name>Libraries</name>

@@ -36,7 +36,7 @@ unsigned int *__dutyPointer;
 TIM_TypeDef  *__ICtimerName;
 unsigned int  __risingChannelNo;
 unsigned int  __fallingChannelNo;
-unsigned int __ICdone=0;
+volatile unsigned int __ICdone=0;
 
 void PWMout(GPIO_TypeDef* port,int pin,int percentValue,int frequency){
   //choose a timer for analog write here
@@ -211,6 +211,7 @@ __dutyPointer=dutyDataBuffer;
     timerNVIC=portBnvic[pin];
   }
   __ICtimerName=timer;
+  if(timer==TIM2){return 2;}/*error for STM32f030x8 devices that dont have the TIM2*/
   if(IS_TIM_LIST2_PERIPH(timer)){
   RCC_APB2PeriphClockCmd(APBperiphClock, ENABLE);
   }
@@ -228,7 +229,7 @@ __dutyPointer=dutyDataBuffer;
   RCC_AHBPeriphClockCmd(((uint32_t)0x00020000)<<clockShift, ENABLE);
  
   // GPIO port structure config 
-  GPIO_InitStructure.GPIO_Pin = pin;
+  GPIO_InitStructure.GPIO_Pin = 1<<pin;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
@@ -295,13 +296,12 @@ __dutyPointer=dutyDataBuffer;
   TIM_ICInit(timer, &TIM_ICInitStruct);
   
   TIM_ICInitStruct.TIM_Channel = 4*(__fallingChannelNo-1);
-  TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Rising;
-  TIM_ICInitStruct.TIM_ICSelection = TIM_ICSelection_DirectTI;
+  TIM_ICInitStruct.TIM_ICPolarity = TIM_ICPolarity_Falling;
+  TIM_ICInitStruct.TIM_ICSelection = TIM_ICSelection_IndirectTI;
   
   TIM_ICInit(timer, &TIM_ICInitStruct);  
 
-  //TIM enable counter 
-  TIM_Cmd(timer, ENABLE);
+  
 //------------------------------------------------------
    
   TIM_ITConfig(timer, (1<<__risingChannelNo)|(1<<__fallingChannelNo)|TIM_IT_Update, ENABLE);
@@ -310,18 +310,23 @@ __dutyPointer=dutyDataBuffer;
   NVIC_InitStructure.NVIC_IRQChannel = timerNVIC;
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
+
   //exception for the timer 1 for which separate interrupt channel is there
   if(timerNVIC==TIM1_CC_IRQn){
     NVIC_InitStructure.NVIC_IRQChannel = TIM1_BRK_UP_TRG_COM_IRQn;
     NVIC_Init(&NVIC_InitStructure);
   }
+  
+  else{
+    NVIC_Init(&NVIC_InitStructure);
+  }
   // TIM1 counter enable 
   TIM_Cmd(timer, ENABLE);
-while(__ICdone!=minSamples);
-if(__ICdone==minSamples){
+  while(__ICdone!=minSamples){};
+if(__ICdone>=minSamples){
    TIM_ITConfig(timer, (1<<__risingChannelNo)|(1<<__fallingChannelNo)|TIM_IT_Update, DISABLE);
    TIM_Cmd(timer, DISABLE);
+   __ICdone=0;
    return 1;//all went well
 }
 else{return 0;}

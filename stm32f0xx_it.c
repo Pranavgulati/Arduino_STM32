@@ -147,49 +147,45 @@ void USART1_IRQHandler(void){
 
 }
 
-
 void ADC1_COMP_IRQHandler(void){
 extern int *__ADC_data;
 *__ADC_data= ADC_GetConversionValue(ADC1);
 ADC_ClearITPendingBit(ADC1, ADC_IT_EOC);
 }
 
+
+  unsigned int updateCounter=0;
   extern TIM_TypeDef * __ICtimerName;
   extern unsigned int __risingChannelNo;
   extern unsigned int __fallingChannelNo;
   extern unsigned int *__freqPointer;
   extern unsigned int *__dutyPointer;
   extern unsigned int __ICdone;
+
+void TIM2_IRQHandler(){
+  
+
   unsigned long long totalDutyCount=0;
   unsigned long long totalFreqCount=0;
-  unsigned int updateCounter=0;
   
-extern "C"{
-void TIM2_IRQHandler(void){
+  
   if(TIM_GetITStatus(__ICtimerName,TIM_IT_Update)){
       TIM_ClearITPendingBit(__ICtimerName, TIM_IT_Update);
     updateCounter++;
   //do not alter the above variable anywhere in the following code
   //add update event related code here  
   }  
-   if(TIM_GetITStatus(__ICtimerName,1<<__risingChannelNo)){
+  else if(TIM_GetITStatus(__ICtimerName,1<<__risingChannelNo)){
       TIM_ClearITPendingBit(__ICtimerName, 1<<__risingChannelNo);
-      unsigned int offset=(((__risingChannelNo-1)*0x04)+0x34);
-      uint16_t *CCRrisePointer=( uint16_t*)__ICtimerName;
-      offset=offset/2;
-      while(offset){CCRrisePointer++;offset--;}
+  unsigned int* CCRrisePointer =(unsigned int*)__ICtimerName+ (((__risingChannelNo-1)*0x04)+0x34);
   totalFreqCount= (updateCounter*0xFFFF)+ *CCRrisePointer;
     //set the counter to 0 at rising edge
     TIM_SetCounter(__ICtimerName,0x0000);
   }
-    
-  if(TIM_GetITStatus(__ICtimerName,1<<__fallingChannelNo)){
+  else if(TIM_GetITStatus(__ICtimerName,1<<__fallingChannelNo)){
   TIM_ClearITPendingBit(__ICtimerName, 1<<__fallingChannelNo);
-        unsigned int offset=(((__fallingChannelNo-1)*0x04)+0x34);
-      uint16_t *CCRfallPointer=( uint16_t*)__ICtimerName;
-      offset=offset/2;
-      while(offset){CCRfallPointer++;offset--;}
-
+  unsigned int* CCRfallPointer =(unsigned int*)__ICtimerName+ (((__fallingChannelNo-1)*0x04)+0x34);
+  
     //reading the correct CCR register automatically
      totalDutyCount =(updateCounter*0xFFFF)+ *CCRfallPointer;
   //the total count now contains the width of the high pulse
@@ -205,22 +201,21 @@ void TIM2_IRQHandler(void){
 }
 
 
-void TIM1_BRK_UP_TRG_COM_IRQHandler(void){
+void TIM1_BRK_UP_TRG_COM_IRQHandler(){
 TIM2_IRQHandler();
 }
-void TIM1_CC_IRQHandler(void){
-TIM2_IRQHandler();
-}
-
-
-void TIM3_IRQHandler(void){
-  TIM2_IRQHandler();
-
-}
-
-void TIM15_IRQHandler(void){
+void TIM1_CC_IRQHandler(){
 TIM2_IRQHandler();
 }
 
+void TIM3_IRQHandler(){
+  
+while(1);
 }
+
+void TIM15_IRQHandler(){
+TIM2_IRQHandler();
+}
+
+
 /******************* (C) COPYRIGHT 2012 STMicroelectronics *****END OF FILE****/
