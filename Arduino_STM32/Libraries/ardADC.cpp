@@ -186,6 +186,3 @@ analogRead(port,pin,__ADC_data);
 int analogReadIT(){
 return *__ADC_data;
 }
-
-
-
