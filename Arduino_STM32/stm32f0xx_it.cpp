@@ -110,8 +110,7 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
-void USART1_IRQHandler(void){
-  
+void USART_CommonHandler(serial Serial){
   if(USART_GetITStatus(Serial.USART, USART_IT_RXNE) != RESET ){
     USART_ClearFlag(Serial.USART,USART_IT_RXNE);
     //RXNE flag is cleared when the buffer is read so no clear reqd.
@@ -145,6 +144,21 @@ void USART1_IRQHandler(void){
     }      
  }
 
+}
+
+void USART1_IRQHandler(void){
+  //-----------------------------Handle other user interrupts above this------------------------
+  //since we are using the Serial object in which we store the USART name 
+  //we need only one handler for communication handling
+  //for any other intrrut handling users can add code above this comment
+USART_CommonHandler(Serial);
+}
+void USART2_IRQHandler(void){
+  //-----------------------------Handle other user interrupts above this------------------------
+  //since we are using the Serial object in which we store the USART name 
+  //we need only one handler for communication handling
+  //for any other intrrut handling users can add code above this comment
+USART_CommonHandler(Serial1);
 }
 
 

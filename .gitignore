@@ -46,5 +46,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-IAR-STM32F051R8-SK/**
-Debug/**
+Arduino_STM32/Debug

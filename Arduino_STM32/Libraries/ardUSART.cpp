@@ -2,10 +2,11 @@
 #include <ardUSART.h>
 #include <String.h>
 
-serial Serial;
+serial Serial(COM1);
+serial Serial1(COM2);
 
 void serial::stop(){
-USART_DeInit(Serial.USART);
+USART_DeInit(this->USART);
 }
 void serial::stopAll(){
 USART_DeInit(USART1);
@@ -20,7 +21,11 @@ USART_DeInit(USART4);
 
 @retval None
 */
-void serial::begin(uint8_t COMPORT,uint32_t baudRate){
+serial::serial(uint8_t COMPORT){
+this->COMPORT=COMPORT;
+}
+
+void serial::begin(uint32_t baudRate){
   recvBuf_tail=0;
   recvBuf_head=0;
   txBuf_tail=0;
@@ -31,7 +36,7 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
   uint8_t RXpin=10,TXpin=9;
   uint32_t usartClock=RS232_COM1_CLK;
   
-  switch(COMPORT){
+  switch(this->COMPORT){
     case COM1:
       USART =USART1;
       gpioPort=GPIOA;
@@ -61,18 +66,19 @@ void serial::begin(uint8_t COMPORT,uint32_t baudRate){
   /* USART configuration */
   //setting the USART props in our struct so that they can be read also
   
-  Serial.USART=USART;
-  Serial.USART_props=&USART_properties;
-  USART_StructInit(Serial.USART_props);
-  Serial.USART_props->USART_BaudRate=baudRate;
-  USART_Init(Serial.USART,Serial.USART_props);
-  USART_ITConfig(Serial.USART,USART_IT_RXNE,  ENABLE);
-  USART_Cmd(Serial.USART,ENABLE);
-  //interrupts are registered only for USART1 and is considered the default port
-  //PRO users may change this as they want
+  this->USART=USART;
+  this->USART_props=&USART_properties;
+  USART_StructInit(this->USART_props);
+  this->USART_props->USART_BaudRate=baudRate;
+  USART_Init(this->USART,this->USART_props);
+  USART_ITConfig(this->USART,USART_IT_RXNE,  ENABLE);
+  USART_Cmd(this->USART,ENABLE);
+//enabling interrupts for the corresponding ports 
   NVIC_InitTypeDef NVIC_InitStructure;
   /* Enable the USART Interrupt */
-  NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+  //even  though the same code is handling the interrupt 
+  //the corresponding handler was invoked for consistency but is not entirely required
+  NVIC_InitStructure.NVIC_IRQChannel = (this->USART==USART1?USART1_IRQn:USART2_IRQn);
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
@@ -85,16 +91,16 @@ void serial::write(uint8_t *data,uint32_t size){
     
   for(int i=0;i<size;i++){
     
-    uint8_t next = (Serial.txBuf_tail + 1) % TX_BUF_LEN;
-    int temp=USART_GetITStatus(Serial.USART, USART_IT_TXE)==SET;
-    if(Serial.txBuf_head== Serial.txBuf_tail && USART_GetITStatus(Serial.USART, USART_IT_TXE)==SET ){
-      USART_SendData(Serial.USART,Serial.txBuf[Serial.txBuf_head]);     
+    uint8_t next = (this->txBuf_tail + 1) % TX_BUF_LEN;
+    int temp=USART_GetITStatus(this->USART, USART_IT_TXE)==SET;
+    if(this->txBuf_head== this->txBuf_tail && USART_GetITStatus(this->USART, USART_IT_TXE)==SET ){
+      USART_SendData(this->USART,this->txBuf[this->txBuf_head]);     
     }
-    else if (next != Serial.txBuf_head)
+    else if (next != this->txBuf_head)
     {
        // save new data in buffer: tail points to where byte goes
-      Serial.txBuf[Serial.txBuf_tail] = (*(data++)); // save new byte
-      Serial.txBuf_tail= next;
+      this->txBuf[this->txBuf_tail] = (*(data++)); // save new byte
+      this->txBuf_tail= next;
     } 
     /*
       by doing this when 'i' is incremented the code will try again to 
@@ -107,8 +113,8 @@ void serial::write(uint8_t *data,uint32_t size){
     {
       i--;      
     }
-    USART_ITConfig(Serial.USART,USART_IT_TXE,ENABLE);
-    USART_Cmd(Serial.USART,ENABLE);
+    USART_ITConfig(this->USART,USART_IT_TXE,ENABLE);
+    USART_Cmd(this->USART,ENABLE);
   
   
   
@@ -186,7 +192,7 @@ write('\n');
 }
 void serial::println(unsigned long data,uint8_t mode){
 
-  print(data);
+  print(data,mode);
   write('\n');
 }
 void serial::println(const char* data){
@@ -198,14 +204,14 @@ void serial::println(const char* data){
 uint16_t serial::read(){
   
   // Empty buffer?
-if (Serial.recvBuf_head == Serial.recvBuf_tail){ return -1;}
+if (this->recvBuf_head == this->recvBuf_tail){ return -1;}
   // Read from "head"
-  uint8_t d = Serial.recvBuf[Serial.recvBuf_head]; // grab next byte
-  Serial.recvBuf_head = (Serial.recvBuf_head + 1) % RX_BUF_LEN;
+  uint8_t d = this->recvBuf[this->recvBuf_head]; // grab next byte
+  this->recvBuf_head = (this->recvBuf_head + 1) % RX_BUF_LEN;
   return d;
 }
 uint8_t serial::available(){
-  return (Serial.recvBuf_tail + RX_BUF_LEN - Serial.recvBuf_head) % RX_BUF_LEN;
+  return (this->recvBuf_tail + RX_BUF_LEN - this->recvBuf_head) % RX_BUF_LEN;
 }
 
 void serial::clearTx(){

@@ -21,14 +21,15 @@ public:
  uint8_t recvBuf_head;
  uint8_t txBuf_tail;
  uint8_t txBuf_head;
+ uint8_t COMPORT;
 USART_TypeDef* USART;
 USART_InitTypeDef* USART_props;
 
 
-
+serial(uint8_t COMPORT);
 void stop();
 void stopAll();
-void begin(uint8_t COMPORT,uint32_t baudRate);
+void begin(uint32_t baudRate);
 //TX functions
 //non-interrupt based write
 void write(uint8_t data);
@@ -56,6 +57,7 @@ uint8_t available();
 
 
 extern serial Serial;
+extern serial Serial1;
 
 
 

@@ -20,7 +20,7 @@ ADC_DeInit(ADCx);//for STM32f03/5
 //bits is 12 10 8 or 6
 int analogRead(GPIO_TypeDef* port,uint8_t pin,uint8_t bits){
 //add assert param so that the pin parameter has correct values only
-  
+  ADC_ITConfig(ADC1, ADC_IT_EOC, DISABLE);
   ADC_InitTypeDef          ADC_InitStructure;
   GPIO_InitTypeDef         GPIO_InitStructure;
   
