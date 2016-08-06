@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1177056564</fileChecksum>
+  <fileChecksum>3988324585</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
@@ -433,6 +433,14 @@
       <file>$PROJ_DIR$\Debug\Obj\stm32f4xx_hash_md5.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm32f0xx_comp.pbi</file>
       <file>$PROJ_DIR$\Debug\List\ardADC.i</file>
+      <file>$PROJ_DIR$\Debug\Obj\GPIOexample.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\GPIOexample.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\DACexample.pbi</file>
+      <file>$PROJ_DIR$\Examples\DACexample.cpp</file>
+      <file>$PROJ_DIR$\Debug\Obj\DACexample.o</file>
+      <file>$PROJ_DIR$\Examples\DACexample.c</file>
+      <file>$PROJ_DIR$\Debug\List\GPIOexample.i</file>
+      <file>$PROJ_DIR$\Examples\GPIOexample.cpp</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\..\STM32F4_Libs\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.c</name>
@@ -2242,7 +2250,7 @@
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 85 355 401 67 312 207 316 415 290 385 404 102 370 375 305 202 100 152 75 199 423 288 59 154 393 349 406 410 66 337 72 174 311 4 142 148 350 130 372 5</file>
+          <file> 85 355 401 67 312 207 316 415 428 385 404 102 370 375 305 202 100 152 75 199 423 288 59 154 393 349 406 410 66 337 72 174 311 4 142 148 350 130 372 5</file>
         </tool>
       </inputs>
     </file>
@@ -2315,6 +2323,52 @@
         </tool>
       </inputs>
     </file>
+    <file>
+      <name>$PROJ_DIR$\Examples\DACexample.cpp</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 429</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 431</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 245 210 192 265 111 405 229 340 330 369 160 267 165 391 287 48 62 127 416 104 107 368 120 114 358 239 331 151 296 68 324 346 206 228 211 233 352 124 88 412 263 57 215 64 394 377 241 50 95 325 360</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Examples\GPIOexample.cpp</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 427</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 433 428</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 127 391 111 165 287 62 416 104 107 192 405 229 340 265 210 330 245 369 160 368 120 114 358 239 331 151 48 296 68 324 346 206 228 211 233 352 124 88 412 263 57 215 64 394 377 241 50 95 325 360</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 352 368 111 229 331 48 287 265 324 346 296 68 391 210 104 340 239 151 124 206 88 62 412 228 263 330 57 160 215 127 64 211 394 245 377 233 107 416 241 165 114 50 405 95 358 369 325 192 120</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
     <forcedrebuild>
       <name>$PROJ_DIR$\stm32f0xx_it.c</name>
       <tool>ICCARM</tool>

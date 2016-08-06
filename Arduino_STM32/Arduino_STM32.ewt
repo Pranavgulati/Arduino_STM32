@@ -188,6 +188,12 @@
       <name>$PROJ_DIR$\Examples\ADCexample.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\Examples\DACexample.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Examples\GPIOexample.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Examples\SerialExample.cpp</name>
     </file>
   </group>

@@ -1,7 +1,7 @@
 #ifndef _ardDAC_h
 #define _ardDAC_h 
 #include <stm32f0xx_dac.h>
-
+// PA4 (DAC_OUT1) is the only avaiable DAC output ------------
 class  dac{
 uint8_t channel;
 public:

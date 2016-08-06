@@ -1,4 +1,3 @@
-#include <arm_comm.h>
 #include <Arduino.h>
 #include <ardGPIO.h>
 #include <ardUSART.h>
