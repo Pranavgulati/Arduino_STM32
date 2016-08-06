@@ -1918,7 +1918,13 @@
       </excluded>
     </file>
     <file>
+      <name>$PROJ_DIR$\Examples\CRCexample.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Examples\DACexample.cpp</name>
+      <excluded>
+        <configuration>Debug</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\Examples\GPIOexample.cpp</name>

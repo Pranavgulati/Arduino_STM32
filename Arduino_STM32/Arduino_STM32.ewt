@@ -188,6 +188,9 @@
       <name>$PROJ_DIR$\Examples\ADCexample.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\Examples\CRCexample.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Examples\DACexample.cpp</name>
     </file>
     <file>
