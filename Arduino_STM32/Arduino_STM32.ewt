@@ -183,6 +183,12 @@
     </file>
   </group>
   <group>
+    <name>Examples</name>
+    <file>
+      <name>$PROJ_DIR$\Examples\ADCexample.cpp</name>
+    </file>
+  </group>
+  <group>
     <name>Libraries</name>
     <file>
       <name>$PROJ_DIR$\Libraries\ardADC.cpp</name>
