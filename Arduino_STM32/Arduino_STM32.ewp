@@ -1913,6 +1913,12 @@
     <name>Examples</name>
     <file>
       <name>$PROJ_DIR$\Examples\ADCexample.cpp</name>
+      <excluded>
+        <configuration>Debug</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Examples\SerialExample.cpp</name>
     </file>
   </group>
   <group>

@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>29310852</fileChecksum>
+  <fileChecksum>1177056564</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
@@ -2242,7 +2242,7 @@
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 85 355 401 67 312 207 316 415 407 385 404 102 370 375 305 202 100 152 75 199 423 288 59 154 393 349 406 410 66 337 72 174 311 4 142 148 350 130 372 5</file>
+          <file> 85 355 401 67 312 207 316 415 290 385 404 102 370 375 305 202 100 152 75 199 423 288 59 154 393 349 406 410 66 337 72 174 311 4 142 148 350 130 372 5</file>
         </tool>
       </inputs>
     </file>
@@ -2315,10 +2315,6 @@
         </tool>
       </inputs>
     </file>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
     <forcedrebuild>
       <name>$PROJ_DIR$\stm32f0xx_it.c</name>
       <tool>ICCARM</tool>
