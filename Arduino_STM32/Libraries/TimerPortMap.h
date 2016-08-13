@@ -1,40 +1,4 @@
  // you havee to select timer,then its clock from port and pin 
- unsigned int portAtimClkMap[16]={
-    RCC_APB1Periph_TIM2,        //ch1
-    RCC_APB1Periph_TIM2,        //ch2
-    RCC_APB1Periph_TIM2,        //ch3
-    RCC_APB1Periph_TIM2,        //ch4
-    RCC_APB1Periph_TIM14,       //ch1
-    RCC_APB1Periph_TIM2,        //ch1
-    RCC_APB2Periph_TIM16,       //ch1
-    RCC_APB2Periph_TIM17,       //ch1
-    RCC_APB2Periph_TIM1,        //ch1
-    RCC_APB2Periph_TIM1,        //ch2
-    RCC_APB2Periph_TIM1,        //ch3
-    RCC_APB2Periph_TIM1,        //ch4
-    0,                          //ch etr
-    0,
-    0,
-    RCC_APB1Periph_TIM2,        //ch1
-  };
-    unsigned int portBtimClkMap[16]={
-    RCC_APB1Periph_TIM3,        //ch3
-    RCC_APB1Periph_TIM3,        //ch4
-    0,                          //no timer
-    RCC_APB1Periph_TIM2,        //ch2
-    RCC_APB1Periph_TIM3,        //ch1
-    RCC_APB1Periph_TIM3,        //ch2
-    0,                          //ch1n
-    0,                          //ch1n
-    RCC_APB2Periph_TIM16,       //ch1
-    RCC_APB2Periph_TIM17,       //ch1
-    RCC_APB1Periph_TIM2,        //ch3
-    RCC_APB1Periph_TIM2,        //ch4
-    0,                          //ch bk1n
-    0,                          //ch1n
-    RCC_APB2Periph_TIM15,       //ch1
-    RCC_APB2Periph_TIM15        //ch2
-  };
 
   TIM_TypeDef* portAtimMap[16]={
     TIM2,        //ch1          //conflicts with PA0,PA5,PA15
@@ -72,6 +36,43 @@
     TIM15,       //ch1
     TIM15        //ch2
   };
+   unsigned int portAtimClkMap[16]={
+    RCC_APB1Periph_TIM2,        //ch1
+    RCC_APB1Periph_TIM2,        //ch2
+    RCC_APB1Periph_TIM2,        //ch3
+    RCC_APB1Periph_TIM2,        //ch4
+    RCC_APB1Periph_TIM14,       //ch1
+    RCC_APB1Periph_TIM2,        //ch1
+    RCC_APB2Periph_TIM16,       //ch1
+    RCC_APB2Periph_TIM17,       //ch1
+    RCC_APB2Periph_TIM1,        //ch1
+    RCC_APB2Periph_TIM1,        //ch2
+    RCC_APB2Periph_TIM1,        //ch3
+    RCC_APB2Periph_TIM1,        //ch4
+    0,                          //ch etr
+    0,
+    0,
+    RCC_APB1Periph_TIM2,        //ch1
+  };
+    unsigned int portBtimClkMap[16]={
+    RCC_APB1Periph_TIM3,        //ch3
+    RCC_APB1Periph_TIM3,        //ch4
+    0,                          //no timer
+    RCC_APB1Periph_TIM2,        //ch2
+    RCC_APB1Periph_TIM3,        //ch1
+    RCC_APB1Periph_TIM3,        //ch2
+    0,                          //ch1n
+    0,                          //ch1n
+    RCC_APB2Periph_TIM16,       //ch1
+    RCC_APB2Periph_TIM17,       //ch1
+    RCC_APB1Periph_TIM2,        //ch3
+    RCC_APB1Periph_TIM2,        //ch4
+    0,                          //ch bk1n
+    0,                          //ch1n
+    RCC_APB2Periph_TIM15,       //ch1
+    RCC_APB2Periph_TIM15        //ch2
+  };
+
    unsigned int portAchMap[16]={
     1,        //ch1
     2,        //ch2

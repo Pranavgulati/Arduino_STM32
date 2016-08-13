@@ -1919,6 +1919,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\Examples\CRCexample.cpp</name>
+      <excluded>
+        <configuration>Debug</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\Examples\DACexample.cpp</name>
@@ -1928,6 +1931,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\Examples\GPIOexample.cpp</name>
+      <excluded>
+        <configuration>Debug</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Examples\PWMexample.cpp</name>
       <excluded>
         <configuration>Debug</configuration>
       </excluded>
@@ -2296,9 +2305,6 @@
     <name>User</name>
     <file>
       <name>$PROJ_DIR$\main.cpp</name>
-      <excluded>
-        <configuration>Debug</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\stm32f0xx_it.cpp</name>

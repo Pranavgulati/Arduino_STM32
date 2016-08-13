@@ -3,19 +3,18 @@
 
 #include <stm32f0xx_tim.h>
 /*
+11 completely non conflicting PWMs are available 
+10 conflicting PWMs are available with each conflicting with one other pin
+3  conflicting PWMs are available with each conflicting with 2 other pins
 
-GPIOA 0,1,2,3,5,8,9,10,11,15
-GPIOA 4,6,7 can only PWMout and getFrequency and not getDuty
+therfore 11 + 10/2 +3/3 = 17 total PWMs are available which can run simultaneously
 
-GPIOB 0,1,3,4,5,10,11,14,15
-GPIOB 8,9 can only PWMout and getFrequency and not getDuty
+for sake of simplicity i'm listing only the non- conflicting ones but the API supports all
 
-tim1,2,3 have 4 channels
-tim15 has 2 channels for pwm and IC
-tim14 has  1 channel for pwn or input capture
-tim16 has  1 channel for pwn or input capture
-tim17 has  1 channel for pwn or input capture
-tim6 can only do basic timing
+GPIOA 4,8,9,10,11
+GPIOB 0,1,4,5,14,15
+
+for more details look in TimerPortMap.h 
 */
 
 

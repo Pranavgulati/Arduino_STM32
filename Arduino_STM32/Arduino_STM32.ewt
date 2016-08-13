@@ -197,6 +197,9 @@
       <name>$PROJ_DIR$\Examples\GPIOexample.cpp</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\Examples\PWMexample.cpp</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\Examples\SerialExample.cpp</name>
     </file>
   </group>
